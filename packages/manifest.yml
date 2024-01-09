@@ -1,0 +1,14 @@
+packages:
+  mastrogpt:
+    actions:
+      index:
+        function: mastrogpt/index.py
+        web: true
+  sample:
+    actions:
+      echo:
+        function: sample/echo.py
+        web: true
+      reverse:
+        function: sample/reverse.py
+        web: true

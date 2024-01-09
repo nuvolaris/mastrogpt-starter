@@ -1,0 +1,14 @@
+version: '3'
+
+tasks:
+
+    default:
+        dir: packages
+        cmds: 
+        - nuv -wsk project deploy
+
+
+    clean:
+        dir: packages
+        cmds: 
+        - nuv -wsk project undeploy
