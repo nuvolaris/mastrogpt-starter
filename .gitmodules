@@ -1,0 +1,4 @@
+[submodule "docs"]
+	path = docs
+	url = git@github.com:nuvolaris/nuvolaris-documentation
+	branch = 3.0.0-mastrogpt
