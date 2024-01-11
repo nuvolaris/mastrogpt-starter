@@ -6,8 +6,11 @@ packages:
         web: true
   sample:
     actions:
-      openai:
-        function: sample/openai.py
+      hello-openai:
+        function: sample/hello-openai.py
+        web: true
+      hello-kube:
+        function: sample/hello-kube.py
         web: true
       echo:
         function: sample/echo.py
