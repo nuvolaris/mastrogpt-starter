@@ -1,0 +1,8 @@
+KEY= "OPENAI_API_KEY"
+from pathlib import Path
+lines = Path(".env").read_text().splitlines()
+line = [x for x in lines if KEY in x ][0]
+args = { KEY: line.split("=",1)[-1] }
+
+%load_ext autoreload
+%autoreload 2

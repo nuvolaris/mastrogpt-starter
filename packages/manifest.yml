@@ -7,10 +7,10 @@ packages:
   sample:
     actions:
       hello-openai:
-        function: sample/hello-openai.py
+        function: sample/hello_openai.py
         web: true
       hello-kube:
-        function: sample/hello-kube.py
+        function: sample/hello_kube.py
         web: true
       echo:
         function: sample/echo.py
