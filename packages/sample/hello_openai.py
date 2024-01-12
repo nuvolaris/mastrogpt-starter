@@ -18,7 +18,7 @@ def ask(input):
 %cd packages/sample
 import hello_openai as h
 args['input']="write a function returning the sum of the numbers up to a provided number"
-r = h.main(arrgs)
+r = h.main(args)
 """
 def main(args):
     global AI

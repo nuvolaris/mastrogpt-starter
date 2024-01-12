@@ -9,6 +9,9 @@ packages:
       hello-openai:
         function: sample/hello_openai.py
         web: true
+        docker: ghcr.io/nuvolaris/action-python-v311:3.0.0-beta.2401111655
+        inputs:
+          OPENAI_API_KEY: ${OPENAI_API_KEY}
       hello-kube:
         function: sample/hello_kube.py
         web: true
