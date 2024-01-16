@@ -5,7 +5,8 @@ MODEL = "gpt-3.5-turbo"
 AI = None
 
 def req(msg):
-    return [{"role": "system", "content": ROLE}, {"role": "user", "content": msg}]
+    return [{"role": "system", "content": ROLE}, 
+            {"role": "user", "content": msg}]
 
 def ask(input):
     comp = AI.chat.completions.create(model=MODEL, messages=req(input))
