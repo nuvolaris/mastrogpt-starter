@@ -3,6 +3,7 @@ import json
 
 
 def main(args):
+    input = args.get("input", "")
 
     url = args.get('SLACK_URL')
     headers = {'Content-type': 'application/json'}

@@ -21,7 +21,7 @@ packages:
       reverse:
         function: sample/reverse.py
         web: true
-  wishlist:
+  waitlist:
     inputs:
         SLACK_URL: ${SLACK_URL}
         API_KEY_ASSISTANT_API: ${API_KEY_ASSISTANT_API}
@@ -29,14 +29,14 @@ packages:
         ASSISTANT_AI_ID: ${ASSISTANT_AI_ID}
     actions:
       create-thread:
-        function: wishlist/create_thread.py
+        function: waitlist/create_thread.py
         web: true
       send_message:
-        function: wishlist/send_message.py
+        function: waitlist/send_message.py
         web: true
       list_messages: 
-        function: wishlist/send_message.py
+        function: waitlist/send_message.py
         web: true
       notify:
-        function: wishlist/notify.py
+        function: waitlist/notify.py
         web: true
