@@ -23,10 +23,10 @@ packages:
         web: true
   waitlist:
     inputs:
-        SLACK_URL: ${SLACK_URL}
-        API_KEY_ASSISTANT_API: ${API_KEY_ASSISTANT_API}
-        ORGANIZATION: ${ORGANIZATION}
-        ASSISTANT_AI_ID: ${ASSISTANT_AI_ID}
+      SLACK_URL: ${SLACK_URL}
+      API_KEY_ASSISTANT_API: ${API_KEY_ASSISTANT_API}
+      ORGANIZATION: ${ORGANIZATION}
+      ASSISTANT_AI_ID: ${ASSISTANT_AI_ID}
     actions:
       create-thread:
         function: waitlist/create_thread.py
@@ -34,8 +34,8 @@ packages:
       send_message:
         function: waitlist/send_message.py
         web: true
-      list_messages: 
-        function: waitlist/send_message.py
+      list_messages:
+        function: waitlist/list_messages.py
         web: true
       notify:
         function: waitlist/notify.py

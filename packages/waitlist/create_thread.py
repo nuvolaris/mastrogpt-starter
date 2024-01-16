@@ -1,7 +1,10 @@
 from openai import OpenAI
 
-
 def main(args):
+    try:
+        counter = int(args['state'])
+    except:
+        counter = 0
     try:
         client = OpenAI(
             organization=args.get('ORGANIZATION'),
@@ -11,8 +14,11 @@ def main(args):
         empty_thread = client.beta.threads.create()
 
         return {
-            'body': empty_thread.id
+            'body': {
+            'output': empty_thread.id,
+            'state': str(counter + 1)
+            }
         }
 
     except Exception as e:
-        raise f"An error occurred: {e}"
+        raise f'An error occurred: {e}'

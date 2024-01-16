@@ -1,7 +1,10 @@
 from openai import OpenAI
 
-
 def main(args):
+    try:
+        counter = int(args["state"])
+    except:
+        counter = 0
     global ASSISTANT_ID
     ASSISTANT_ID = args.get('ASSISTANT_AI_ID')
 
@@ -14,7 +17,10 @@ def main(args):
     run_thread(args['threadId'], openai)
 
     return {
-        'body': 'OK'
+        'body': {
+            'output':'ok',
+            'state': str(counter+1)
+        }
     }
 
 
