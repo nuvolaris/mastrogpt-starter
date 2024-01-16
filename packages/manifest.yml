@@ -21,3 +21,6 @@ packages:
       reverse:
         function: sample/reverse.py
         web: true
+      extra:
+        function: sample/extra.py
+        web: true
