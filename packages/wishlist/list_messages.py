@@ -1,13 +1,15 @@
 from openai import OpenAI
 import time
 
+
 def main(args):
     global ASSISTANT_ID
     ASSISTANT_ID = args['ASSISTANT_AI_ID']
+    input = args.get("input", "")
 
     openai = OpenAI(
         organization=args.get('ORGANIZATION'),
-        api_key=args.get('API_KEY_AI')
+        api_key=args.get('API_KEY_ASSISTANT_API')
     )
 
     res = list_last_assistant_thread_messages(args.get('threadId'), openai)
@@ -22,10 +24,11 @@ def list_last_assistant_thread_messages(thread_id, openai, max_attempts=5):
         response = openai.beta.threads.messages.list(thread_id)
 
         all_messages = response.data
-        assistant_messages = [message.content for message in all_messages if message.role == "assistant"]
+        assistant_messages = [
+            message.content for message in all_messages if message.role == "assistant"]
 
         last_assistant_message = assistant_messages[0] if assistant_messages else None
-        if last_assistant_message: 
+        if last_assistant_message:
             return last_assistant_message
         else:
             if max_attempts > 0:
