@@ -10,13 +10,13 @@ def main(args):
         api_key=args.get('API_KEY_ASSISTANT_API')
     )
 
-    post_message_on_thread(args['message'], args['threadId'], openai)
+    post_message_on_thread(args['message'], args['state'], openai)
     run_thread(args['threadId'], openai)
 
     return {
         'body': {
             'output':'ok',
-            'state': args['threadId']
+            'state': args['state']
         }
     }
 
