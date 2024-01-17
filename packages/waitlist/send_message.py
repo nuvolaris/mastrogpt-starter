@@ -11,7 +11,7 @@ def main(args):
     )
 
     post_message_on_thread(args['message'], args['state'], openai)
-    run_thread(args['threadId'], openai)
+    run_thread(args['state'], openai)
 
     return {
         'body': {
