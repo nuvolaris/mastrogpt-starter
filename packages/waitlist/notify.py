@@ -3,9 +3,9 @@ import json
 
 def main(args):
     try:
-        counter = int(args['state'])
+        state = (args['state'])
     except:
-        counter = 0
+        state = ''
     input = args.get('input', '')
 
     url = args.get('SLACK_URL')
@@ -17,13 +17,13 @@ def main(args):
         return {
             'body': {
             'output': 'ok',
-            'state': str(counter + 1)
+            'state': state
             }
         }
     else:
         return {
             'body': {
             'output': 'ko',
-            'state': str(counter + 1)
+            'state': state
             }
         }

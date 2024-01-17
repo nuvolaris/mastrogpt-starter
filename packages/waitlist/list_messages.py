@@ -2,26 +2,20 @@ from openai import OpenAI
 import time
 
 def main(args):
-    try:
-        counter = int(args['state'])
-    except:
-        counter = 0
-
     global ASSISTANT_ID
     ASSISTANT_ID = args['ASSISTANT_AI_ID']
-    input = args.get('input', '')
 
     openai = OpenAI(
         organization=args.get('ORGANIZATION'),
         api_key=args.get('API_KEY_ASSISTANT_API')
     )
 
-    res = list_last_assistant_thread_messages(args.get('threadId'), openai)
+    res = list_last_assistant_thread_messages(args.get('state'), openai)
 
     return {
             'body': {
             'output': res[0].text.value,
-            'state': str(counter + 1)
+            'state': args.get('state')
             }
     }
    
