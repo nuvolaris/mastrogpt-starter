@@ -4,17 +4,17 @@ import json
 def main(arg):
     data = {
         "services": [
-            {"name": "Echo", "url": "https://nuvolaris.dev/api/v1/web/dashboard/sample/echo"},
-            {"name": "Reverse", "url": "https://nuvolaris.dev/api/v1/web/dashboard/sample/reverse"},
-            {
-                "name": "HelloOpenAI",
-                "url": "https://nuvolaris.dev/api/v1/web/dashboard/sample/hello-openai",
-                "parameters": {"name": "OPENAI_API_KEY", "type": "textfield"},
+            { 
+                "name": "Demo", 
+                "url": "https://nuvolaris.dev/api/v1/web/dashboard/sample/demo"
             },
             {
-                "name": "HelloKube",
-                "url": "https://nuvolaris.dev/api/v1/web/dashboard/sample/hello-kube",
-                "parameters": {"name": "KUBECONFIG", "type": "textarea"},
+                "name": "Chat",
+                "url": "https://nuvolaris.dev/api/v1/web/dashboard/sample/chat",
+                "parameters": {
+                    "name": "OPENAI_API_KEY",
+                    "type": "textfield"
+                },
             },
         ]
     }

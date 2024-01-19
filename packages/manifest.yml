@@ -5,24 +5,17 @@ packages:
         function: mastrogpt/index.py
         web: true
   sample:
+    inputs:
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
     actions:
-      hello-openai:
-        function: sample/hello_openai.py
+      models:
+        function: sample/models.py
         web: true
-        docker: ghcr.io/nuvolaris/action-python-v311:3.0.0-beta.2401111655
-        inputs:
-          OPENAI_API_KEY: ${OPENAI_API_KEY}
-      hello-kube:
-        function: sample/hello_kube.py
-        web: true
-      echo:
-        function: sample/echo.py
+      chat:
+        function: sample/chat.py
         web: true
       reverse:
-        function: sample/reverse.py
-        web: true
-      extra:
-        function: sample/extra.py
+        function: sample/demo.py
         web: true
   waitlist:
     inputs:
