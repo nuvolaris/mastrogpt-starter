@@ -2,6 +2,7 @@ version: '3'
 
 dotenv:
 - .env
+- .user
 
 tasks:
 
