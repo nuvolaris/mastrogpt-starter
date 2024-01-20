@@ -1,6 +1,5 @@
 import json
 
-
 def main(arg):
     data = {
         "services": [

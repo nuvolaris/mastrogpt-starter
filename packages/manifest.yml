@@ -14,7 +14,7 @@ packages:
       chat:
         function: sample/chat.py
         web: true
-      reverse:
+      demo:
         function: sample/demo.py
         web: true
   waitlist:

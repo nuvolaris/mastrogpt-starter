@@ -1,0 +1,14 @@
+version: '3'
+
+dotenv:
+- ../.user
+
+tasks:
+
+  setup:
+    - |
+      sudo npm install -g http-server
+
+  default:
+    cmds:
+    - http-server ../web -c-1  -P $APIMY

@@ -17,10 +17,10 @@ tasks:
         - nuv -wsk project undeploy
 
     setup: |
-      python -m venv venv
+      python3 -m venv venv
       source venv/bin/activate
-      pip install ipython openai
+      pip install ipython openai requests
 
     cli: |
         source venv/bin/activate
-        ipython -i init.ipy
+        ipython -i util/init.ipy
