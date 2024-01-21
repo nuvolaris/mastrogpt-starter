@@ -1,7 +1,12 @@
 #bad to be removed use manifest.yml
 
-
 packages:
+  callback:
+    actions:
+      callback:
+        function: callback/callback.py
+        web: true
+
   mastrogpt:
     actions:
       index:
@@ -25,17 +30,15 @@ packages:
         web: true
         function: calendar/demo.py
   sample:
- 
-      demo:
-        function: mastrogpt/demo.py
-        web: true
-      display:
-        function: mastrogpt/display.zip
-        web: true
-        runtime: python:default
+    demo:
+      function: mastrogpt/demo.py
+      web: true
+    display:
+      function: mastrogpt/display.zip
+      web: true
+      runtime: python:default
 
   openai:
-
     inputs:
       OPENAI_API_KEY: ${OPENAI_API_KEY}
       API_KEY_ASSISTANT_API: ${API_KEY_ASSISTANT_API}
@@ -49,13 +52,6 @@ packages:
       models:
         function: openai/models.py
         web: true
-
-  calendar:
-    actions:
-      demo:
-        function: calendar/demo.zip
-        web: true
-        runtime: python:default
 
   waitlist:
     inputs:
