@@ -1,6 +1,11 @@
 from openai import OpenAI
 
-ROLE = "You are a code assistant skilled in python."
+ROLE = """
+When requested to show chess position, always use the FEN notation, 
+and show the FEN position in a code block startin with ```fen and ending with ```.
+When requested to write code, pick Python.
+"""
+
 MODEL = "gpt-3.5-turbo"
 AI = None
 

@@ -7,6 +7,10 @@ packages:
       index:
         function: mastrogpt/index.py
         web: true
+      display:
+        function: mastrogpt/display.zip
+        runtime: python:default
+        web: true
 
   calendar:
     inputs:
@@ -20,22 +24,13 @@ packages:
       REDIRECT_URIS_1: ${REDIRECT_URIS_1}
       JAVASCRIPT_ORIGINS_0: ${JAVASCRIPT_ORIGINS_0}
       OPEN_AI_KEY_CALENDAR: ${OPEN_AI_KEY_CALENDAR}
-    actions:
+    actions: 
       demo:
-        web: true
-        function: calendar/demo.py
-  sample:
- 
-      demo:
-        function: mastrogpt/demo.py
-        web: true
-      display:
-        function: mastrogpt/display.zip
-        web: true
+        function: calendar/demo.zip
         runtime: python:default
+        web: true
 
   openai:
-
     inputs:
       OPENAI_API_KEY: ${OPENAI_API_KEY}
       API_KEY_ASSISTANT_API: ${API_KEY_ASSISTANT_API}
@@ -49,13 +44,6 @@ packages:
       models:
         function: openai/models.py
         web: true
-
-  calendar:
-    actions:
-      demo:
-        function: calendar/demo.zip
-        web: true
-        runtime: python:default
 
   waitlist:
     inputs:

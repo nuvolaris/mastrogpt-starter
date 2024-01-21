@@ -7,6 +7,7 @@ dotenv:
 tasks:
 
     default:
+        aliases: [deploy]
         dir: packages
         cmds: 
         - task: mastrogpt:display
