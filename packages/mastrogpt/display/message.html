@@ -1,0 +1,48 @@
+<style>
+    .centered {
+        position: fixed;
+        /* could be absolute */
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        margin: auto;
+        width: 350px;
+        height: 250px;
+        border: 3px solid teal;
+        background-color: white;
+        opacity: .8;
+        border-radius: 25px;
+    }
+
+    .bottomright {
+        position: absolute;
+        bottom: 0;
+        margin-bottom: 7px;
+        margin: 7px;
+        right: 0;
+    }
+
+    .bottomleft {
+        position: absolute;
+        bottom: 0;
+        margin-bottom: 7px;
+        margin: 7px;
+        left: 10px;
+    }
+
+    .thumbnail {
+        max-width: 30px;
+        height: auto;
+    }
+
+    #messageBox {
+        margin: 1rem;
+    }
+</style>
+<div class="container centered">
+    <div id="messageBox">
+        <h2>{{title}}</h2>
+        <p>{{message}}</p>
+    </div>
+</div>

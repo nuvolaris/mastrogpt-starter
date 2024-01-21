@@ -11,4 +11,9 @@ tasks:
 
   default:
     cmds:
-    - http-server ../web -c-1  -P $APIMY
+    - http-server -a 127.0.0.1 ../web -c-1  -P $APIMY
+
+  virtualenv:
+    cmds:
+    - sudo docker run -u"$(id -u)" --entrypoint=/mnt/virtualenv.sh -v $PWD:/mnt ghcr.io/nuvolaris/action-python-v311:3.0.0-beta.2401111655
+

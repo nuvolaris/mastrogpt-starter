@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/alvaromontoro/almond.css@latest/dist/almond.min.css" />
+    <link rel="stylesheet" href="/css/almond.min.css" />
     <style>
         :root {
             --primaryH: 210;
@@ -20,7 +20,7 @@
             --font-weight-normal: 200;
             --font-weight-thin: 100;
             --line-height: 1.75rem;
-            --heading-margin: 1.5rem 0 1rem;
+            --heading-margin: 0.5rem 0 0.5rem;
             --border-radius: 2px;
             --error: #d00;
             --warning: #ec0;
@@ -55,6 +55,7 @@
         .flex {
             display: flex;
             flex-wrap: wrap;
+            padding-top: .5rem;
         }
 
         .flex>* {
@@ -68,10 +69,10 @@
         <h2>MastroGPT</h2>
     </div>
     <div id="iframe-container">
-        <iframe id="chat" src="chat.html"></iframe>
-        <iframe id="display" src="display.html"></iframe>
+        <iframe id="chat" src="/chat.html"></iframe>
+        <iframe id="display" src="/display.html"></iframe>
     </div>
-    <script src="index.js"></script>
+    <script src="/js/index.js"></script>
 </body>
 
 </html>

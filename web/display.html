@@ -2,12 +2,40 @@
 <html>
 
 <head>
-    <link rel="stylesheet" href="pico.min.css">
-    <script src="display.js"></script>
+    <link rel="stylesheet" href="/css/almond.min.css" />
+    <style>
+        :root {
+            --primaryH: 210;
+            --primaryS: 50%;
+            --primaryL: 40%;
+            --primary-bg: #fff;
+            --secondaryH: 0;
+            --secondaryS: 0%;
+            --secondaryL: 13%;
+            --secondary-bg: #fff;
+            --font-family: Roboto, Helvetica, Arial, sans-serif;
+            --font-size-root: 100%;
+            --font-weight-bolder: 700;
+            --font-weight-bold: 400;
+            --font-weight-normal: 200;
+            --font-weight-thin: 100;
+            --line-height: 1.75rem;
+            --heading-margin: .5rem 0 .5rem;
+            --border-radius: 2px;
+            --error: #d00;
+            --warning: #ec0;
+            --info: #369;
+            --correct: #080;
+        }
+    </style>
+    <script src="/js/display.js"></script>
 </head>
 
 <body>
-    <h1>Display</h1>
+    <div id="_display_container_">
+        <h1>Welcome to MastroGPT</h1>
+        <p>Please select the chat you want to use on the top menu.</p>
+    </div>
 </body>
 
 </html>

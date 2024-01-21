@@ -5,11 +5,13 @@ def main(arg):
         "services": [
             { 
                 "name": "Demo", 
-                "url": "https://nuvolaris.dev/api/v1/web/dashboard/sample/demo"
+                "url": "mastrogpt/demo",
+                "template": "/mastrogpt/demo.html"
             },
             {
                 "name": "Chat",
-                "url": "https://nuvolaris.dev/api/v1/web/dashboard/sample/chat",
+                "url": "openai/chat",
+                "template": "/openai/chat.html",
                 "parameters": {
                     "name": "OPENAI_API_KEY",
                     "type": "textfield"
