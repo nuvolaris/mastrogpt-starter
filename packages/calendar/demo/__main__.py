@@ -22,8 +22,10 @@ def main(args):
         raise(e)
 
 def get_today_events(args):
-    redirect_uris = args.get('REDIRECT_URIS_0'), args.get('REDIRECT_URIS_1')
+    
+    redirect_uris = args.get('REDIRECT_URIS')
 
+    
     web_client_info = {
          "web": {
             "client_id": args.get('CLIENT_ID'),
@@ -47,6 +49,9 @@ def get_today_events(args):
         else:
             flow = InstalledAppFlow.from_client_config(
                 web_client_info, scopes)
+            authorization_url = flow.authorization_url(prompt='consent')
+            print('auth url')
+            print(authorization_url)
             creds = flow.run_local_server(port=8080)
 
     service = build('calendar', 'v3', credentials=creds)
@@ -84,3 +89,7 @@ def send_events_to_ai(events, args):
 def req(ROLE, events):
     return [{"role": "system", "content": ROLE}, 
             {"role": "user", "content": 'Describe this google calendar events:' + str(events)}]
+
+
+
+###I have to return auth_url -> that callback some action passing user token -> with that action we can continue api floe (get events from calendar etc)
