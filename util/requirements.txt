@@ -1,0 +1,6 @@
+python-chess
+chevron
+pygments
+google-auth-oauthlib 
+google-auth-httplib2 
+google-api-python-client

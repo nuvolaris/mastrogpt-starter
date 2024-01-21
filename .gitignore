@@ -7,3 +7,4 @@ venv/
 _*
 content/posts/media/
 .user
+pacakges/*/*.zip

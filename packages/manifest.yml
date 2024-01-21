@@ -4,25 +4,43 @@ packages:
       index:
         function: mastrogpt/index.py
         web: true
-  sample:
+      demo:
+        function: mastrogpt/demo.py
+        web: true
+      display:
+        function: mastrogpt/display.zip
+        web: true
+        runtime: python:default
+
+  openai:
     inputs:
       OPENAI_API_KEY: ${OPENAI_API_KEY}
-    actions:
-      models:
-        function: sample/models.py
-        web: true
-      chat:
-        function: sample/chat.py
-        web: true
-      demo:
-        function: sample/demo.py
-        web: true
-  waitlist:
-    inputs:
-      SLACK_URL: ${SLACK_URL}
       API_KEY_ASSISTANT_API: ${API_KEY_ASSISTANT_API}
       ORGANIZATION: ${ORGANIZATION}
       ASSISTANT_AI_ID: ${ASSISTANT_AI_ID}
+      SLACK_URL: ${SLACK_URL}
+    actions:
+      chat:
+        function: openai/chat.py
+        web: true
+      models:
+        function: openai/models.py
+        web: true
+
+  calendar:
+    actions:
+      demo:
+        function: calendar/demo.zip
+        web: true
+        runtime: python:default
+
+  waitlist:
+    inputs:
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      API_KEY_ASSISTANT_API: ${API_KEY_ASSISTANT_API}
+      ORGANIZATION: ${ORGANIZATION}
+      ASSISTANT_AI_ID: ${ASSISTANT_AI_ID}
+      SLACK_URL: ${SLACK_URL}
     actions:
       create-thread:
         function: waitlist/create_thread.py
