@@ -21,7 +21,7 @@ def main(args):
 
     flow = Flow.from_client_config(
         web_client_info, scopes,
-        redirect_uri=args.get('URL_TO_REDIRECT_CALLBACK')
+        redirect_uri=args.get('URL_TO_REDIRECT_CALLBACK'))
 
     authorization_url, _ = flow.authorization_url(prompt='consent')
     print('authorization_url evaluated', authorization_url)
