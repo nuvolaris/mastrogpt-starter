@@ -28,17 +28,9 @@ packages:
       URL_TO_REDIRECT_CALLBACK: ${URL_TO_REDIRECT_CALLBACK}
     actions:
       demo:
+        function: calendar/demo.zip
+        runtime: python:default
         web: true
-        function: calendar/demo.py
-  sample:
-    demo:
-      function: mastrogpt/demo.py
-      web: true
-    display:
-      function: mastrogpt/display.zip
-      web: true
-      runtime: python:default
-
   openai:
     inputs:
       OPENAI_API_KEY: ${OPENAI_API_KEY}
