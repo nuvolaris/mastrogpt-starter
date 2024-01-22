@@ -1,13 +1,17 @@
 def main(args):
     try:
         code = args.get('code')
-        print("code ")
-        print(code)
+        
         state = args.get('state')
-        print("state ")
+        scope = args.get('scope')
+        print("scope", scope)
+        print("state", state)
+        print("code", code)
+
         print(state)
         return {
             "body": {
+                "output": "ok",
                 "state": state,
                 "code": code
             }
