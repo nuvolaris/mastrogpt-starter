@@ -1,51 +1,62 @@
-version: '3'
+version: "3"
 
 dotenv:
-- .env
-- .user
+  - .env
+  - .user
 
 tasks:
+  default:
+    dir: packages
+    cmds:
+      - task: mastrogpt:display
+      - task: calendar:demo
+      - task: callback:callback
+      - nuv -wsk project deploy
 
-    default:
-        dir: packages
-        cmds: 
-        - task: mastrogpt:display
-        - task: calendar:demo
-        - nuv -wsk project deploy
+  mastrogpt:display:
+    dir: packages/mastrogpt/display
+    cmds:
+      - cp ../../../util/virtualenv.zip ../display.zip
+      - zip ../display.zip *
+    sources:
+      - packages/mastrogpt/display/*
+      - util/virtualenv.zip
+    generates:
+      - packages/mastrogpt/display.zip
 
-    mastrogpt:display:
-        dir: packages/mastrogpt/display
-        cmds:
-        - cp ../../../util/virtualenv.zip ../display.zip
-        - zip ../display.zip *
-        sources:
-        - packages/mastrogpt/display/*
-        - util/virtualenv.zip
-        generates:
-        - packages/mastrogpt/display.zip
+  calendar:demo:
+    dir: packages/calendar/demo
+    cmds:
+      - cp ../../../util/virtualenv.zip ../demo.zip
+      - zip ../demo.zip *
+    sources:
+      - packages/calendar/demo/*
+      - util/virtualenv.zip
+    generates:
+      - packages/calendar/demo.zip
 
-    calendar:demo:
-        dir: packages/calendar/demo
-        cmds:
-        - cp ../../../util/virtualenv.zip ../demo.zip
-        - zip ../demo.zip *
-        sources:
-        - packages/calendar/demo/*
-        - util/virtualenv.zip
-        generates:
-        - packages/calendar/demo.zip
+  callback:callback:
+    dir: packages/callback/callback
+    cmds:
+      - cp ../../../util/virtualenv.zip ../callback.zip
+      - zip ../callback.zip *
+    sources:
+      - packages/callback/callback/*
+      - util/virtualenv.zip
+    generates:
+      - packages/calendar/callback.zip
 
-    clean:
-        dir: packages
-        cmds: 
-        - nuv -wsk project undeploy
+  clean:
+    dir: packages
+    cmds:
+      - nuv -wsk project undeploy
 
-    setup: |
-      python3 -m venv venv
-      source venv/bin/activate
-      pip install ipython openai requests
-      pip install -r util/requirements.txt
+  setup: |
+    python3 -m venv venv
+    source venv/bin/activate
+    pip install ipython openai requests
+    pip install -r util/requirements.txt
 
-    cli: |
-        source venv/bin/activate
-        ipython -i util/init.ipy
+  cli: |
+    source venv/bin/activate
+    ipython -i util/init.ipy
