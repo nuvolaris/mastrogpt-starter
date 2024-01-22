@@ -4,7 +4,7 @@ import uuid
 def main(args):
     
     web_client_info = {
-       "web": {
+        "web": {
             "client_id": args.get('CLIENT_ID'),
             "project_id": args.get('PROJECT_ID'),
             "auth_uri": args.get('AUTH_URI'),
