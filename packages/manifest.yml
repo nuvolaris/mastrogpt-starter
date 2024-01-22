@@ -16,13 +16,8 @@ packages:
       URL_TO_REDIRECT_CALLBACK: ${URL_TO_REDIRECT_CALLBACK}
     actions:
       callback:
-        function: callback/callback.py
-        web: true
-
-  mastrogpt:
-    actions:
-      index:
-        function: mastrogpt/index.py
+        function: callback/callback.zip
+        runtime: python:default
         web: true
 
   calendar:
@@ -40,9 +35,16 @@ packages:
       URL_TO_REDIRECT_CALLBACK: ${URL_TO_REDIRECT_CALLBACK}
     actions:
       demo:
-        function: calendar/calendar.zip
+        function: calendar/demo.zip
         runtime: python:default
         web: true
+
+  mastrogpt:
+    actions:
+      index:
+        function: mastrogpt/index.py
+        web: true
+
   openai:
     inputs:
       OPENAI_API_KEY: ${OPENAI_API_KEY}
