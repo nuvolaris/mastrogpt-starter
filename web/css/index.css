@@ -1,0 +1,58 @@
+:root {
+    --primaryH: 210;
+    --primaryS: 50%;
+    --primaryL: 40%;
+    --primary-bg: #fff;
+    --secondaryH: 0;
+    --secondaryS: 0%;
+    --secondaryL: 13%;
+    --secondary-bg: #fff;
+    --font-family: Roboto, Helvetica, Arial, sans-serif;
+    --font-size-root: 100%;
+    --font-weight-bolder: 700;
+    --font-weight-bold: 400;
+    --font-weight-normal: 200;
+    --font-weight-thin: 100;
+    --line-height: 1.75rem;
+    --heading-margin: 0.5rem 0 0.5rem;
+    --border-radius: 2px;
+    --error: #d00;
+    --warning: #ec0;
+    --info: #369;
+    --correct: #080;
+}
+
+body,
+html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    border: 2px solid red;
+    max-width: 100%;
+}
+
+#top-area {
+    height: 10%;
+}
+
+#iframe-container {
+    height: 90%;
+    width: 100%;
+    display: flex;
+}
+
+iframe {
+    width: 50%;
+    height: 100%;
+    border: 2px solid green;
+}
+
+.flex {
+    display: flex;
+    flex-wrap: wrap;
+    padding-top: .5rem;
+}
+
+.flex>* {
+    margin-right: 1rem;
+}

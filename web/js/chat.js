@@ -7,7 +7,7 @@ const PERSON_IMG = "/img/human-mini.png";
 const BOT_NAME = "BOT";
 const PERSON_NAME = "YOU";
 
-const msgerForm  =  document.querySelector(".msger-inputarea");
+const msgerForm = document.querySelector(".msger-inputarea");
 const msgerInput = document.querySelector(".msger-input");
 const msgerChat = document.querySelector(".msger-chat");
 const titleChat = document.getElementById("chat-title");
@@ -18,37 +18,37 @@ const displayWindow = window.parent.document.getElementById("display").contentWi
 class Invoker {
 
   constructor(name, url) {
-      this.name = name
-      this.url = url
-      this.state = null
+    this.name = name
+    this.url = url
+    this.state = null
   }
 
   async invoke(msg) {
-      // welcome message no input
-      if(msg == null) {
-          return "Welcome, you have selected "+this.name;
-      }
-      // no url 
-      if(this.url == null) 
-          return "Welcome, please select the chat application you want to use by clicking a  button on top.";
-      // prepare a request
-      let json = {
-        input: msg
-      }
-      if(this.state != null) {
-        json['state'] = this.state
-      }
-      // send the request
-      return fetch(this.url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json'},
-        body: JSON.stringify(json)
-      })
+    // welcome message no input
+    if (msg == null) {
+      return "Welcome, you have selected " + this.name;
+    }
+    // no url 
+    if (this.url == null)
+      return "Welcome, please select the chat application you want to use by clicking a  button on top.";
+    // prepare a request
+    let json = {
+      input: msg
+    }
+    if (this.state != null) {
+      json['state'] = this.state
+    }
+    // send the request
+    return fetch(this.url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(json)
+    })
       .then(r => r.json())
       .then(r => {
         // got answer from the backend
         console.log(r)
-        this.state = r.state 
+        this.state = r.state
         let data = r
         let output = data.output
         delete data['output']
@@ -57,18 +57,18 @@ class Invoker {
         return output
       })
       .catch(e => {
-          console.log(e)
-          return `ERROR interacting with ${this.url}`
+        console.log(e)
+        return `ERROR interacting with ${this.url}`
       })
   }
 }
 
 function formatDate(date) {
-    const h = "0" + date.getHours();
-    const m = "0" + date.getMinutes();
-    return `${h.slice(-2)}:${m.slice(-2)}`;
+  const h = "0" + date.getHours();
+  const m = "0" + date.getMinutes();
+  return `${h.slice(-2)}:${m.slice(-2)}`;
 }
-  
+
 
 function appendMessage(name, img, side, text) {
   //   Simple solution for small apps
@@ -76,14 +76,14 @@ function appendMessage(name, img, side, text) {
   let html = marked.parse(text)
   const msgHTML = `
     <div class="msg ${side}-msg">
-      <div class="msg-img" style="background-image: url(${img})"></div>
-
       <div class="msg-bubble">
         <div class="msg-info">
-          <div class="msg-info-name">${name}</div>
-          <div class="msg-info-time">${formatDate(new Date())}</div>
+          <div class="msg-info-name">
+            <div class="msg-img" style="background-image: url(${img})"></div>
+            <span>${name}</span>
+          </div>
+          <div class="msg-info-time"> ${formatDate(new Date())}</div>
         </div>
-
         <div class="msg-text">${html}</div>
       </div>
     </div>
@@ -111,7 +111,7 @@ msgerForm.addEventListener("submit", event => {
 
   human(input);
 
-  if(invoker) {
+  if (invoker) {
     invoker.invoke(input).then(reply => bot(reply))
   } else {
     bot("Did you select a chat?")
@@ -119,7 +119,7 @@ msgerForm.addEventListener("submit", event => {
 });
 
 
-window.addEventListener('message', async function(ev) {
+window.addEventListener('message', async function (ev) {
   console.log(ev);
   invoker = new Invoker(ev.data.name, ev.data.url)
   titleChat.textContent = ev.data.name

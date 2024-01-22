@@ -1,15 +1,18 @@
+
+// global variables
 let chat = document.getElementById("chat").contentWindow
 let display = document.getElementById("display").contentWindow
+let base = location.href.replace(/index\.html$/, "")
 
+// inizialize chat
 chat.addEventListener("load", function() { 
     chat.postMessage({name: "No Chat", url: null})
     console.log("posted No Chat")
 })
 
+// inizialize the chat buttons
 document.addEventListener("DOMContentLoaded", function() {
-
     // retrieve index
-    let base = location.href.replace(/index\.html$/, "")
     fetch(base+"api/my/mastrogpt/index")
     .then( (x)  => x.json())
     .then( (data) => {
