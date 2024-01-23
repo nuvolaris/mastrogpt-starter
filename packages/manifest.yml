@@ -1,6 +1,23 @@
 #bad to be removed use manifest.yml
 
 packages:
+  googlecalendar:
+    inputs:
+      CLIENT_ID: ${CLIENT_ID}
+      PROJECT_ID: ${PROJECT_ID}
+      AUTH_URI: ${AUTH_URI}
+      TOKEN_URI: ${TOKEN_URI}
+      AUTH_PROVIDER_X509_CERT_URL: ${AUTH_PROVIDER_X509_CERT_URL}
+      CLIENT_SECRET: ${CLIENT_SECRET}
+      REDIRECT_URIS_0: ${REDIRECT_URIS_0}
+      REDIRECT_URIS_1: ${REDIRECT_URIS_1}
+      JAVASCRIPT_ORIGINS_0: ${JAVASCRIPT_ORIGINS_0}
+      OPEN_AI_KEY_CALENDAR: ${OPEN_AI_KEY_CALENDAR}
+      URL_TO_REDIRECT_CALLBACK: ${URL_TO_REDIRECT_CALLBACK}
+    actions:
+      token:
+        function: googlecalendar/token.py
+        web: true
   callback:
     inputs:
       CLIENT_ID: ${CLIENT_ID}
