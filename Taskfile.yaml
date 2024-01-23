@@ -9,8 +9,6 @@ tasks:
     dir: packages
     cmds:
       - task: mastrogpt:display
-      - task: calendar:demo
-      - task: callback:callback
       - nuv -wsk project deploy
 
   mastrogpt:display:
@@ -23,28 +21,6 @@ tasks:
       - util/virtualenv.zip
     generates:
       - packages/mastrogpt/display.zip
-
-  calendar:demo:
-    dir: packages/calendar/demo
-    cmds:
-      - cp ../../../util/virtualenv.zip ../demo.zip
-      - zip ../demo.zip *
-    sources:
-      - packages/calendar/demo/*
-      - util/virtualenv.zip
-    generates:
-      - packages/calendar/demo.zip
-
-  callback:callback:
-    dir: packages/callback/callback
-    cmds:
-      - cp ../../../util/virtualenv.zip ../callback.zip
-      - zip ../callback.zip *
-    sources:
-      - packages/callback/callback/*
-      - util/virtualenv.zip
-    generates:
-      - packages/calendar/callback.zip
 
   clean:
     dir: packages
