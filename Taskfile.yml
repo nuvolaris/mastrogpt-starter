@@ -1,0 +1,85 @@
+version: '3'
+
+dotenv:
+- .env
+- .user
+
+vars:
+    RUNTIME: "ghcr.io/nuvolaris/action-python-v311:3.0.0-beta.2401111655"
+    DRY: ""
+    SKIP: ""
+
+tasks:
+
+    venv:
+        requires: { vars: [A] }
+        cmds:
+        - cp "packages/{{.A}}/requirements.txt" "util/requirements.txt"
+        - sudo docker run -u"$(id -u)" --entrypoint=/mnt/virtualenv.sh -v $PWD/util:/mnt "{{.RUNTIME}}"
+        - mv util/virtualenv.zip "packages/{{.A}}.zip"
+        status:
+        - test -e "packages/{{.A}}.zip"
+
+    build:one:
+        aliases: [b]
+        requires: { vars: [A] }
+        cmds:
+        - task: venv
+        -   |
+            FILE=$(basename "{{.A}}")
+            cd packages/{{.A}}
+            zip ../$FILE.zip  * -x requirements.txt
+        sources:
+        - packages/{{.A}}/*
+        generates:
+        - packages/{{.A}}.zip
+
+    clean:
+    - rm -v packages/*/*.zip
+
+    build:
+    - task build:one A=mastrogpt/display
+    - task build:one A=calendar/demo
+
+    setup: |
+        sudo npm install -g http-server
+        python3 -m venv venv
+        source venv/bin/activate
+        pip install ipython openai requests
+        for i in packages/*/*/requirements.txt
+        do pip install -r $i
+        done
+
+    cli: |
+        source venv/bin/activate
+        ipython -i util/init.ipy
+
+    deploy:one:
+        aliases: [d]
+        requires: { vars: [F] }
+        cmds: 
+        -   |
+            if [[ {{.F}} == *.zip ]]
+            then {{.DRY}} task build:one A={{ trimSuffix ".zip" .F}}
+                {{.DRY}} nuv action update {{trimSuffix ".zip" .F}} packages/{{.F}} --kind python:default --web true
+            else {{.DRY}} nuv action update  {{trimSuffix ".py" .F}} packages/{{.F}} --web true
+            fi
+
+    deploy:
+        aliases: [de]
+        dir: packages
+        cmds: 
+        - task: build
+        - nuv -wsk project deploy
+    
+    undeploy:
+        aliases: [un]
+        dir: packages
+        cmds: 
+        - nuv -wsk project undeploy
+
+    serve:
+        aliases: [s]
+        cmds:
+        - http-server -a 127.0.0.1 web -c-1 --mimetypes util/mime.types  -P $APIMY
+

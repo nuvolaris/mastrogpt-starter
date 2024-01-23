@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<script src="https://cdn.jsdelivr.net/npm/ace-builds@1.32.3/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+</head>
+
+<body>
+        <style type="text/css" media="screen">
+            #editor { 
+                position: absolute;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                left: 0;
+            }
+        </style>
+        <div id="editor"></div>
+        <script>
+            var editor = ace.edit("editor");
+            editor.setTheme("ace/theme/github");
+            editor.setValue(window.parent.document.getElementById("code").innerText)
+            editor.session.setMode("ace/mode/"+window.parent.document.getElementById("language").innerText);
+        </script>
+    </div>
+</body>
+
+</html>

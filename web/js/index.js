@@ -1,14 +1,8 @@
-
 // global variables
 let chat = document.getElementById("chat").contentWindow
 let display = document.getElementById("display").contentWindow
 let base = location.href.replace(/index\.html$/, "")
 
-// inizialize chat
-chat.addEventListener("load", function() { 
-    chat.postMessage({name: "No Chat", url: null})
-    console.log("posted No Chat")
-})
 
 // inizialize the chat buttons
 document.addEventListener("DOMContentLoaded", function() {
@@ -28,7 +22,7 @@ document.addEventListener("DOMContentLoaded", function() {
             let = p = document.createElement("span")
             p.appendChild(button);
             insert.appendChild(p);
-            console.log("posted "+service.name)
+            console.log("enabled "+service.name)
         });
     })
     .catch( (e) => { console.log(e); alert("ERROR: cannot load index") } )

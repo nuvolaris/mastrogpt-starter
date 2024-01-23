@@ -21,3 +21,7 @@
     --info: #369;
     --correct: #080;
 }
+#_display_container_ {
+    width: 100%;
+    height: 100%;
+}

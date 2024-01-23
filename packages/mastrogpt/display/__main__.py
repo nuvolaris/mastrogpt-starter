@@ -1,18 +1,35 @@
+import json
 import chevron
-from pathlib import Path
+import chess, chess.svg
 
-def message(args):
-    with open("message.html") as f:
+def render(src, args):
+    with open(src) as f:
         return chevron.render(f, args)
-
+    
+def board(args):
+    fen = args['chess']
+    board = chess.Board(fen)
+    data = {"html": chess.svg.board(board=board) }
+    out = render("html.html", data)
+    return out
+    
 def main(args):
     out = ""
 
-    # rendering message box
-    if "message" in args:
+    if "html" in args:
+        out = render("html.html", args)
+    elif "code" in args:
+        data = {
+            "code": args['code'],
+            "language": args.get("language", "plain_text")
+        }
+        out = render("editor.html", data)
+    elif "chess" in args:
+        out = board(args)
+    elif "message" in args:
         if not "title" in args:
             args["title"] = "Message"
-        out = message(args)
+        out = render("message.html", args)
 
     code = 200 if out != "" else 204
     return {

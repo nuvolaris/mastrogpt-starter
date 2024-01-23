@@ -11,6 +11,9 @@ packages:
         function: mastrogpt/display.zip
         runtime: python:default
         web: true
+      demo:
+        function: mastrogpt/demo.py
+        web: true
 
   calendar:
     inputs:

@@ -6,12 +6,10 @@ def main(arg):
             { 
                 "name": "Demo", 
                 "url": "mastrogpt/demo",
-                "template": "/mastrogpt/demo.html"
             },
             {
-                "name": "Chat",
+                "name": "OpenAI",
                 "url": "openai/chat",
-                "template": "/openai/chat.html",
                 "parameters": {
                     "name": "OPENAI_API_KEY",
                     "type": "textfield"

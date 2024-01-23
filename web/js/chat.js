@@ -7,6 +7,7 @@ const PERSON_IMG = "/img/human-mini.png";
 const BOT_NAME = "BOT";
 const PERSON_NAME = "YOU";
 
+// Page compoents
 const msgerForm = document.querySelector(".msger-inputarea");
 const msgerInput = document.querySelector(".msger-input");
 const msgerChat = document.querySelector(".msger-chat");
@@ -124,5 +125,5 @@ window.addEventListener('message', async function (ev) {
   invoker = new Invoker(ev.data.name, ev.data.url)
   titleChat.textContent = ev.data.name
   areaChat.innerHTML = ""
-  bot(await invoker.invoke(null))
+  bot(await invoker.invoke(""))
 })

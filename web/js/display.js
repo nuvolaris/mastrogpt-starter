@@ -1,3 +1,5 @@
+
+// receive messages and forward to the display method
 window.addEventListener('message', async function(ev) {
     let data = ev.data
     console.log(data);

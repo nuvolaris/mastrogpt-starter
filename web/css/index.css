@@ -27,7 +27,6 @@ html {
     margin: 0;
     padding: 0;
     height: 100%;
-    border: 2px solid red;
     max-width: 100%;
 }
 
@@ -44,7 +43,6 @@ html {
 iframe {
     width: 50%;
     height: 100%;
-    border: 2px solid green;
 }
 
 .flex {
