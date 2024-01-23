@@ -16,6 +16,9 @@ packages:
       URL_TO_REDIRECT_CALLBACK: ${URL_TO_REDIRECT_CALLBACK}
       URL_TO_REDIRECT_CALLBACK_LOCAL: ${URL_TO_REDIRECT_CALLBACK_LOCAL}
     actions:
+      chat:
+        function: googlecalendar/chat.py
+        web: true
       token:
         function: googlecalendar/token.py
         web: true
