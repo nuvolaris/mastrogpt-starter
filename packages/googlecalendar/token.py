@@ -12,7 +12,7 @@ def main(args):
         'code': code,
         'client_id': client_id,
         'client_secret': client_secret,
-        'redirect_uri': args.get('URL_TO_REDIRECT_CALLBACK'),
+        'redirect_uri': args.get('URL_TO_REDIRECT_CALLBACK_LOCAL'),
         'grant_type': 'authorization_code'
     }
 
