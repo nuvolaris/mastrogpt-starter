@@ -11,6 +11,8 @@ vars:
 
 tasks:
 
+
+
     venv:
         requires: { vars: [A] }
         cmds:
@@ -42,10 +44,6 @@ tasks:
     - task build:one A=calendar/demo
 
     setup: |
-        sudo npm install -g http-server
-        python3 -m venv venv
-        source venv/bin/activate
-        pip install ipython openai requests
         for i in packages/*/*/requirements.txt
         do pip install -r $i
         done
