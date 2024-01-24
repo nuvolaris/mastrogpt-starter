@@ -1,6 +1,5 @@
 #bad to be removed use manifest.yml
 
-
 packages:
   mastrogpt:
     actions:
@@ -15,7 +14,7 @@ packages:
         function: mastrogpt/demo.py
         web: true
 
-  calendar:
+  googlecalendar:
     inputs:
       CLIENT_ID: ${CLIENT_ID}
       PROJECT_ID: ${PROJECT_ID}
@@ -28,9 +27,11 @@ packages:
       JAVASCRIPT_ORIGINS_0: ${JAVASCRIPT_ORIGINS_0}
       OPEN_AI_KEY_CALENDAR: ${OPEN_AI_KEY_CALENDAR}
     actions: 
-      demo:
-        function: calendar/demo.zip
-        runtime: python:default
+      chat:
+        function: googlecalendar/chat.py
+        web: true
+      token:
+        function: googlecalendar/token.py
         web: true
 
   openai:
