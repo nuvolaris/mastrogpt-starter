@@ -1,0 +1,6 @@
+openai
+minio
+farm-haystack
+setuptools
+nltk
+langdetect

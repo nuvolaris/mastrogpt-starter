@@ -1,0 +1,17 @@
+packages:
+  RAG_EXAMPLE:
+    version: 1.0.0
+    license: Apache-2.0
+    inputs:
+      OPENAI_API_KEY: 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
+      minio_endpoint: minio.nuvolaris.dynamicsconsulting.it
+      minio_access_key: hkxnNvNqwTKawEeP
+      minio_secret_key: OJA9l7iT6Ifb5StQ55lbbocfbauBFXSs
+      bucket_name: nuvolaris-data
+      file_path: 'RFP Playbook - First Edition.pdf'
+    actions:
+      AIImporter:
+        function: AIImporter.zip
+        main: main
+        docker: ghcr.io/cor277/python311_for_ai:20240124
+
