@@ -1,6 +1,6 @@
 {
 	"name": "mastrogpt",
-	"image": "ghcr.io/nuvolaris/mastrogpt-devcontainer:3.1.0-mastropt.2401241550",
+	"image": "ghcr.io/nuvolaris/mastrogpt-devcontainer:3.1.0-mastropt.2401241644",
 	//"build": { "dockerfile": "Dockerfile" },
 	"mounts": [
 		"source=/var/run/docker.sock,target=/var/run/docker-host.sock,type=bind"
