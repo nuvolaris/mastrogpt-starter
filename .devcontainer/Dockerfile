@@ -30,14 +30,17 @@ RUN \
     mkdir /tmp/nuv-installer ;\
     wget $URL -O "/tmp/nuv-installer/$FILE" ;\
     dpkg -i "/tmp/nuv-installer/$FILE"
+RUN \
+    VER=25.0.1 ;\
+    curl -sL https://download.docker.com/linux/static/stable/$(arch)/docker-$VER.tgz |\
+    tar xzvf - docker/docker --strip-components=1 -C /usr/bin
 ENV TZ=Europe/London
 RUN useradd -m nuvolaris -s /bin/bash &&\
     echo "nuvolaris ALL=(ALL:ALL) NOPASSWD: ALL" >>/etc/sudoers
 USER nuvolaris
 WORKDIR /home/nuvolaris
-ADD setup.source /home/nuvolaris/.setup.source
+ADD setup.source /home/nuvolaris/.bashrc
 ADD init.sh /usr/sbin/init.sh
-RUN cat .setup.source .aliases >.bashrc ;\
-    /bin/bash -c 'source /home/nuvolaris/.bashrc'
+RUN /bin/bash -c 'source /home/nuvolaris/.bashrc'
 # proxy to docker and keep alive
 ENTRYPOINT ["/bin/bash", "/usr/sbin/init.sh"]
