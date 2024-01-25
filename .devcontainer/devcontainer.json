@@ -9,5 +9,15 @@
 	"overrideCommand": false,
 	"runArgs": [
 		"--network=host"
-	]
+	],
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"ms-python.python",
+				"stuart.unique-window-colors",
+				"oderwat.indent-rainbow",
+				"alefragnani.Bookmarks"
+			]
+		}
+	}
 }

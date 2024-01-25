@@ -76,3 +76,11 @@ tasks:
         cmds:
         - http-server -a 127.0.0.1 web -c-1 --mimetypes util/mime.types  -P $MY_APIHOST
 
+    deploy2:
+        #- sudo sysctl -w fs.inotify.max_user_watches=1048576
+        - 
+        python -m util.deploy
+        
+
+
+

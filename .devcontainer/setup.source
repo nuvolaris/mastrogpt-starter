@@ -138,6 +138,12 @@ then curl -sSL https://install.python-poetry.org | python3 -
 else ok poetry
 fi
 
+# install watchdog
+if ! which watchmedo >/dev/null
+then pip install watchdog
+else ok watchmedo
+fi
+
 # install jest
 if ! which jest >/dev/null
 then npm install -g jest
