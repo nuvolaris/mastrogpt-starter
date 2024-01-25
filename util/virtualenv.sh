@@ -1,5 +1,5 @@
 #!/bin/bash
-cd /mnt
+cd "$(dirname $0)"
 virtualenv virtualenv
 source virtualenv/bin/activate
 pip install -r requirements.txt

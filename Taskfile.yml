@@ -11,13 +11,11 @@ vars:
 
 tasks:
 
-
-
     venv:
         requires: { vars: [A] }
         cmds:
         - cp "packages/{{.A}}/requirements.txt" "util/requirements.txt"
-        - sudo docker run -u"$(id -u)" --entrypoint=/mnt/virtualenv.sh -v $PWD/util:/mnt "{{.RUNTIME}}"
+        - bash util/virtualenv.sh
         - mv util/virtualenv.zip "packages/{{.A}}.zip"
         status:
         - test -e "packages/{{.A}}.zip"
@@ -41,7 +39,6 @@ tasks:
 
     build:
     - task build:one A=mastrogpt/display
-    - task build:one A=calendar/demo
 
     setup: |
         for i in packages/*/*/requirements.txt
