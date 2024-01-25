@@ -33,7 +33,7 @@ RUN \
 RUN \
     VER=25.0.1 ;\
     curl -sL https://download.docker.com/linux/static/stable/$(arch)/docker-$VER.tgz |\
-    tar xzvf - docker/docker --strip-components=1 -C /usr/bin
+    tar xzvf - docker/docker --strip-components=1 && mv docker /usr/bin/
 ENV TZ=Europe/London
 RUN useradd -m nuvolaris -s /bin/bash &&\
     echo "nuvolaris ALL=(ALL:ALL) NOPASSWD: ALL" >>/etc/sudoers

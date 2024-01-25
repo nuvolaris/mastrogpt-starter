@@ -14,7 +14,7 @@ tasks:
 
   build-and-push:
     -  docker login -u "$GITHUB_USER" -p "$GITHUB_TOKEN" ghcr.io 
-    -  docker build . -t {{.IMG}}:{{.TAG}} --push
+    -  docker build .  --no-cache -t {{.IMG}}:{{.TAG}} --push
 
   image-tag:
     silent: true
