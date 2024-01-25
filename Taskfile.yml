@@ -2,10 +2,8 @@ version: '3'
 
 dotenv:
 - .env
-- .user
 
 vars:
-    RUNTIME: "ghcr.io/nuvolaris/action-python-v311:3.0.0-beta.2401111655"
     DRY: ""
     SKIP: ""
 
@@ -76,5 +74,5 @@ tasks:
     serve:
         aliases: [s]
         cmds:
-        - http-server -a 127.0.0.1 web -c-1 --mimetypes util/mime.types  -P $APIMY
+        - http-server -a 127.0.0.1 web -c-1 --mimetypes util/mime.types  -P $MY_APIHOST
 
