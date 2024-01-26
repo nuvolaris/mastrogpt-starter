@@ -1,15 +1,19 @@
-from openai import OpenAI
+"""
+%cd packages/openai
+from chat import *
+"""
+from openai import AzureOpenAI
 import re
 
 ROLE = """
 When requested to write code, pick Python.
-When requested to show chess position, always use the FEN notation,
-show it always as a markdown code block with the prefix "FEN:" in uppercase.
+When requested to show chess position, always use the FEN notation.
+Wen you show a FEN string, always start it with "FEN:" in upper case and end with a newline.
 When requested to show HTML always include what is in the body tag, 
 but exclude the boilerplate code surrounding the body tag.
 """
 
-MODEL = "gpt-3.5-turbo"
+MODEL = "gpt-35-turbo"
 AI = None
 
 def req(msg):
@@ -50,7 +54,7 @@ def extract(text):
         res['code'] = m[0][1]
         return res
     # search for a chess position
-    pattern = r"FEN: (.*?)\n"
+    pattern = r"FEN: (.*)"
     m = re.findall(pattern, text, re.DOTALL | re.IGNORECASE)
     if len(m) > 0:
         res['chess'] = m[0]
@@ -60,7 +64,8 @@ def extract(text):
 
 def main(args):
     global AI
-    AI = OpenAI(api_key=args.get("OPENAI_API_KEY"))
+    (key, host) = (args["OPENAI_KEY"], args["OPENAI_HOST"])
+    AI = AzureOpenAI(api_version="2023-12-01-preview", api_key=key, azure_endpoint=host)
 
     input = args.get("input", "")
     if input == "":

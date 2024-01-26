@@ -1,6 +1,5 @@
-#bad to be removed use manifest.yml
-
 packages:
+
   mastrogpt:
     actions:
       index:
@@ -13,6 +12,24 @@ packages:
       demo:
         function: mastrogpt/demo.py
         web: true
+
+  openai:
+    inputs:
+      OPENAI_KEY: ${OPENAI_KEY}
+      OPENAI_HOST: ${OPENAI_HOST}
+      API_KEY_ASSISTANT_API: ${API_KEY_ASSISTANT_API}
+      ORGANIZATION: ${ORGANIZATION}
+      ASSISTANT_AI_ID: ${ASSISTANT_AI_ID}
+      SLACK_URL: ${SLACK_URL}
+
+    actions:
+      chat:
+        function: openai/chat.py
+        web: true
+      models:
+        function: openai/models.py
+        web: true
+
 
   googlecalendar:
     inputs:
@@ -34,20 +51,6 @@ packages:
         function: googlecalendar/token.py
         web: true
 
-  openai:
-    inputs:
-      OPENAI_API_KEY: ${OPENAI_API_KEY}
-      API_KEY_ASSISTANT_API: ${API_KEY_ASSISTANT_API}
-      ORGANIZATION: ${ORGANIZATION}
-      ASSISTANT_AI_ID: ${ASSISTANT_AI_ID}
-      SLACK_URL: ${SLACK_URL}
-    actions:
-      chat:
-        function: openai/chat.py
-        web: true
-      models:
-        function: openai/models.py
-        web: true
 
   waitlist:
     inputs:

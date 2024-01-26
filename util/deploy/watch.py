@@ -6,7 +6,6 @@ from .deploy import deploy
 
 counter = 0
 
-
 class ChangeHandler(FileSystemEventHandler):
     """Logs all the events captured."""
     

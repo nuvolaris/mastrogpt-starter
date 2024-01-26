@@ -10,3 +10,4 @@ _*
 content/posts/media/
 .user
 packages/*/*.zip
+util/requirements.txt
