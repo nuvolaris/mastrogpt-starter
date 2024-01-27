@@ -1,10 +1,9 @@
-import time
+import os, time
+from subprocess import Popen
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 
 from .deploy import deploy
-
-counter = 0
 
 class ChangeHandler(FileSystemEventHandler):
     """Logs all the events captured."""
@@ -30,9 +29,11 @@ def watch():
     observer.schedule(event_handler, "web", recursive=True)
     observer.start()
     try:
-        while True:
-            time.sleep(1)
+        serve()
     except KeyboardInterrupt:
         observer.stop()
     observer.join()
 
+# serve web area
+def serve():
+    Popen("task serve", shell=True, env=os.environ)

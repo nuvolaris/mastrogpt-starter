@@ -6,8 +6,10 @@ dotenv:
 vars:
     DRY: ""
     SKIP: ""
+    FLAGS: ""
 
 tasks:
+    default: task -l
 
     build:venv:
         requires: { vars: [A] }
@@ -15,17 +17,16 @@ tasks:
         - cp "packages/{{.A}}/requirements.txt" "util/requirements.txt"
         - bash util/virtualenv.sh
         - mv util/virtualenv.zip "packages/{{.A}}.zip"
-        - task: build:act
+        - task: build:action
         sources:
         - "packages/{{.A}}/requirements.txt"
         generates:
         - "packages/{{.A}}.zip"
 
-    build:act:
+    build:action:
         aliases: [b]
         requires: { vars: [A] }
         cmds:
-        - task: build:venv
         -   |
             FILE=$(basename "{{.A}}")
             cd packages/{{.A}}
@@ -36,17 +37,22 @@ tasks:
         - packages/{{.A}}.zip
 
     clean:
-    - rm -v packages/*/*.zip
+        ignore_error: true
+        cmds:
+        - rm -v packages/*/*.zip
 
-    setup: |
-        nuv -version
-        pip install watchdog
-        for i in packages/*/*/requirements.txt
-        do pip install -r $i
-        done
-        if ! test -e ~/.wskprops
-        then task config
-        fi
+    setup: 
+        desc: setup Nuvolaris MastroGPT
+        cmds:
+        -   |
+            nuv -version
+            pip install watchdog
+            for i in packages/*/*/requirements.txt
+            do pip install -r $i
+            done
+            if ! test -e ~/.wskprops
+            then task config
+            fi
 
     cli: |
         ipython -i util/init.ipy
@@ -56,11 +62,25 @@ tasks:
         cmds:
         - http-server -a 127.0.0.1 web -c-1 --mimetypes util/mime.types  -P $NUVDEV_HOST
 
-    auto:
-        - python -m util.deploy -w
+    deploy:
+        desc: deploy actions
+        cmds:
+        - python -m util.deploy {{.FLAGS}}
+
+    undeploy:
+        ignore_error: true
+        desc: undeploy actions
+        cmds:
+        - >
+            nuv action list | awk 'NR>1 { print $1}' | xargs -L1 nuv action delete
+ 
+    devel:
+        desc: incrementa interactive development mode
+        cmds:
+        - python -m util.deploy -w {{.FLAGS}}
         
     config:
-        desc: Configure MastroGPT
+        desc: configure Nuvolaris MastroGPT
         silent: true
         cmds:
         -   |

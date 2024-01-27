@@ -1,11 +1,9 @@
 #--web true
-#--kind python
+#--kind python:default
 def main(args):
     return {
         "body": "hello"
     }
-
-
 
 
 

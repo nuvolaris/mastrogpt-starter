@@ -1,49 +1,97 @@
-def deploy_web(_dir, _file):
-    dir = "/".join(_dir)
-    file = "/".join(_file)
-    print(f"cd {dir}")
-    print(f"nuv upload {file} {_dir[-2]}/{file}")
+import os
+from  os.path import exists
+from subprocess import Popen
 
-def deploy_action(_path, package, file):
-    [name, typ] = file.rsplit(".", 1)
-    path = "/".join(_path)
-    if package != "default":
-        print(f"package update {package}")
-    print(f"action update {package}/{name} {path}")
+dry_run = False
+
+def set_dry_run(b):
+    global dry_run
+    dry_run = b
+
+def exec(cmd):
+    global dry_run
+    if dry_run:
+        print(cmd)
+        return
+    Popen(cmd, shell=True, env=os.environ)
+
+def extract_args(file):
+    res = []
+    if exists(file):
+        with open(file, "r") as f:
+            for line in f.readlines():
+                if line.startswith("#-"):
+                    res.append(line.strip()[1:])
+    return res
+
+# root _dir and _file (split)
+#def deploy_web(_dir, _file):
+#    dir = "/".join(_dir)
+#    file = "/".join(_file)
+#    print(f"cd {dir}")
+#    print(f"TODO: upload {file} {_dir[-2]}/{file}")
+
+def deploy_package(package):
+    # package args
+    ppath = f"packages/{package}.args"
+    pargs = " ".join(extract_args(ppath))
+    exec(f"nuv package update {package} {pargs}")
 
 def build_venv(sp):
-    print(f"build:venv A={sp[1]}/{sp[2]}")
+    exec(f"task build:venv A={sp[1]}/{sp[2]}")
+    res = sp[:-1]
+    res[-1] += ".zip"
+    return res
 
 def build_action(sp):
-    print(f"build:act A={sp[1]}/{sp[2]}")
+    exec(f"task build:action A={sp[1]}/{sp[2]}")
+    res = sp[:-1]
+    res[-1] += ".zip"
+    return res
 
-def deploy_zip(sp):
-    zip = "/".join(sp)+".zip"
-    print(f"deploy {zip}")
+def deploy_action(sp):
+    [name, typ] = sp[-1].rsplit(".", 1)
+    package = sp[1]
+    artifact = "/".join(sp)
+
+    deploy_package(package)
+
+    if typ == "zip":
+        src = "/".join(sp)[:-4]+"/__main__.py"
+    else:
+        src = "/".join(sp)
+    
+    args = " ".join(extract_args(src))
+    exec(f"nuv action update {package}/{name} {artifact} {args}")
+
 
 """
-file = "packages/deploy/web/index.html"
-file = "web/index.html"
 file = "packages/deploy/hello.py"
+file = "packages/deploy/multi.zip"
 file = "packages/deploy/multi/__main__.py"
-file = "packages/deploy/multi/requirements.txt"
 file = "packages/deploy/multi/requirements.txt"
 """
 def deploy(file):
     print(f"*** {file}")
     sp = file.split("/")
-    if sp[0] == "web":
-        deploy_web(sp[0], sp[1:])
-    elif len(sp) > 3 and sp[2] == "web":
-        deploy_web(sp[0:3], sp[3:])
+    
+    # no web incremental upload for now
+    #if sp[0] == "web":
+    #    deploy_web(sp[0], sp[1:])
+    #elif len(sp) > 3 and sp[2] == "web":
+    #    deploy_web(sp[0:3], sp[3:])
     #elif len(sp) == 2:
     #    deploy_action(sp, "default", sp[1])
-    elif len(sp) == 3:
-        deploy_action(sp, sp[1], sp[2])
-    elif len(sp) > 3:
-        if sp[-1] == "requirements.txt":
-            build_venv(sp)
-        else:
-            build_action(sp)
-        deploy_zip(sp[:-1])
+    
+    # packages/action/file.ext
 
+    if len(sp) == 3:
+        deploy_action(sp)
+    elif len(sp) > 3: 
+        #package/action/file/requrements.txt
+        if sp[-1] == "requirements.txt":
+            sp = build_venv(sp)
+        #package/action/file/__main__.py
+        else:
+            sp = build_action(sp)
+        deploy_action(sp)
