@@ -40,6 +40,7 @@ tasks:
 
     setup: |
         nuv -version
+        pip install watchdog
         for i in packages/*/*/requirements.txt
         do pip install -r $i
         done

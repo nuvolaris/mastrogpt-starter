@@ -60,7 +60,9 @@ def extract(text):
         res['chess'] = m[0]
         return res
     return res
-
+#--web true
+#--param OPENAI_API_KEY $OPENAI_API_KEY
+#--param OPENAI_API_HOST $OPENAI_API_HOST
 
 def main(args):
     global AI

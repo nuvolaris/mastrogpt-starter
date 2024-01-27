@@ -1,3 +1,6 @@
+#--web true
+#--kind python:default
+
 import htmlgenerator as hg
 
 def main(args):

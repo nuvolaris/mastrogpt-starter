@@ -1,4 +1,5 @@
-import json
+#--web true
+
 def main(args):
     
     code = None

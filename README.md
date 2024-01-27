@@ -12,5 +12,5 @@ And you are ready to develop!
 
 Commands to use:
 - `task deploy` to deploy backend on nuvolaris 
-- `task serve` to run locally
+- `task auto` to run locally
 

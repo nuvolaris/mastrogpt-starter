@@ -1,4 +1,3 @@
-import json
 import chevron
 import chess, chess.svg
 
