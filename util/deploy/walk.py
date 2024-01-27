@@ -9,3 +9,4 @@ def walk_subtree(top_directory):
 
 def walk():
     walk_subtree('packages')
+    walk_subtree('web')

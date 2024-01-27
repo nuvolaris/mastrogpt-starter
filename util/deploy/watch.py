@@ -27,6 +27,7 @@ def watch():
     observer = Observer()
     event_handler = ChangeHandler()
     observer.schedule(event_handler, "packages", recursive=True)
+    observer.schedule(event_handler, "web", recursive=True)
     observer.start()
     try:
         while True:

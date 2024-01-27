@@ -9,20 +9,23 @@ vars:
 
 tasks:
 
-    venv:
+    build:venv:
         requires: { vars: [A] }
         cmds:
         - cp "packages/{{.A}}/requirements.txt" "util/requirements.txt"
         - bash util/virtualenv.sh
         - mv util/virtualenv.zip "packages/{{.A}}.zip"
-        status:
-        - test -e "packages/{{.A}}.zip"
+        - task: build:act
+        sources:
+        - "packages/{{.A}}/requirements.txt"
+        generates:
+        - "packages/{{.A}}.zip"
 
-    build:one:
+    build:act:
         aliases: [b]
         requires: { vars: [A] }
         cmds:
-        - task: venv
+        - task: build:venv
         -   |
             FILE=$(basename "{{.A}}")
             cd packages/{{.A}}
@@ -35,9 +38,6 @@ tasks:
     clean:
     - rm -v packages/*/*.zip
 
-    build:
-    - task build:one A=mastrogpt/display
-
     setup: |
         for i in packages/*/*/requirements.txt
         do pip install -r $i
@@ -45,37 +45,14 @@ tasks:
 
     cli: |
         ipython -i util/init.ipy
-
-    deploy:one:
-        aliases: [d]
-        requires: { vars: [F] }
-        cmds: 
-        -   |
-            if [[ {{.F}} == *.zip ]]
-            then {{.DRY}} task build:one A={{ trimSuffix ".zip" .F}}
-                {{.DRY}} nuv action update {{trimSuffix ".zip" .F}} packages/{{.F}} --kind python:default --web true
-            else {{.DRY}} nuv action update  {{trimSuffix ".py" .F}} packages/{{.F}} --web true
-            fi
-
-    deploy:
-        aliases: [de]
-        dir: packages
-        cmds: 
-        - task: build
-        - nuv -wsk project deploy
     
-    undeploy:
-        aliases: [un]
-        dir: packages
-        cmds: 
-        - nuv -wsk project undeploy
 
     serve:
         aliases: [s]
         cmds:
         - http-server -a 127.0.0.1 web -c-1 --mimetypes util/mime.types  -P $MY_APIHOST
 
-    deploy2:
+    auto:
         - python -m util.deploy -w
         
 
