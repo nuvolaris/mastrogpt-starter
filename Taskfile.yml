@@ -39,9 +39,13 @@ tasks:
     - rm -v packages/*/*.zip
 
     setup: |
+        nuv -version
         for i in packages/*/*/requirements.txt
         do pip install -r $i
         done
+        if ! test -e ~/.wskprops
+        then task config
+        fi
 
     cli: |
         ipython -i util/init.ipy
@@ -50,11 +54,28 @@ tasks:
     serve:
         aliases: [s]
         cmds:
-        - http-server -a 127.0.0.1 web -c-1 --mimetypes util/mime.types  -P $MY_APIHOST
+        - http-server -a 127.0.0.1 web -c-1 --mimetypes util/mime.types  -P $NUVDEV_HOST
 
     auto:
         - python -m util.deploy -w
         
+    config:
+        desc: Configure MastroGPT
+        silent: true
+        cmds:
+        -   |
+            echo -n "Enter nuvolaris.dev Username: "
+            read NUVDEV_USERNAME
+            nuv -login https://nuvolaris.dev "$NUVDEV_USERNAME"
+            if test -e ~/.wskprops
+            then
+                source ~/.wskprops
+                echo "NUVDEV_USERNAME=$NUVDEV_USERNAME" >.env
+                echo "NUVDEV_HOST=https://$NUVDEV_USERNAME.nuvolaris.dev" >>.env
+                echo "OPENAI_API_HOST=openai.sciabarra.net:6443" >>.env
+                echo "$AUTH" | awk -F: '{print "OPENAI_API_KEY=" $1 }' >>.env
+            fi
+
 
 
 

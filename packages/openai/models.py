@@ -1,4 +1,4 @@
-# File: models.py
+# @web
 from  openai import AzureOpenAI
 
 def main(args):

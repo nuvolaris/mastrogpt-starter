@@ -9,11 +9,7 @@ def main(arg):
             },
             {
                 "name": "OpenAI",
-                "url": "openai/chat",
-                "parameters": {
-                    "name": "OPENAI_API_KEY",
-                    "type": "textfield"
-                },
+                "url": "openai/chat"
             },
         ]
     }
