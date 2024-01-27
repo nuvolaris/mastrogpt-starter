@@ -51,7 +51,6 @@ tasks:
     cli: |
         ipython -i util/init.ipy
     
-
     serve:
         aliases: [s]
         cmds:

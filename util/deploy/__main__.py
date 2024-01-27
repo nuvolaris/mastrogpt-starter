@@ -1,7 +1,5 @@
 import argparse
-from time import sleep
-
-from .walk import walk
+from .scan import scan
 from .watch import watch
 
 def main():
@@ -9,8 +7,8 @@ def main():
     parser.add_argument('-w', '--watch', action='store_true', help='Watch for changes', required=False)
     args = parser.parse_args()
     # walk and deploy
-    print("Deploying:")
-    walk()
+    print("Scan:")
+    scan()
     # watch if requested
     if  args.watch:
         print("Watching:")

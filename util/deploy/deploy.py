@@ -14,7 +14,7 @@ def deploy_action(_path, package, file):
 def build_venv(sp):
     print(f"build:venv A={sp[1]}/{sp[2]}")
 
-def build_act(sp):
+def build_action(sp):
     print(f"build:act A={sp[1]}/{sp[2]}")
 
 def deploy_zip(sp):
@@ -44,8 +44,6 @@ def deploy(file):
         if sp[-1] == "requirements.txt":
             build_venv(sp)
         else:
-            build_act(sp)
+            build_action(sp)
         deploy_zip(sp[:-1])
-    
-
 

@@ -1,3 +1,5 @@
+#--param OPENAI_API_KEY $OPENAI_API_KEY
+#--param OPENAI_API_HOST $OPENAI_API_HOST
 from  openai import AzureOpenAI
 
 def main(args):
@@ -9,8 +11,3 @@ def main(args):
    models = [m['id'] for m in data['data']]
    return { "models": models }
 
-"""
-out = !source .env ; echo $OPENAI_API_KEY
-args = { "OPENAI_API_KEY": out[0]}
-#print(args)
-"""
