@@ -1,3 +1,7 @@
+#--web true
+#--param OPENAI_API_KEY $OPENAI_API_KEY
+#--param OPENAI_API_HOST $OPENAI_API_HOST
+
 from  openai import AzureOpenAI
 
 def main(args):

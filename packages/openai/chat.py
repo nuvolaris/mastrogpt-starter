@@ -1,4 +1,7 @@
 #--web true
+#--param OPENAI_API_KEY $OPENAI_API_KEY
+#--param OPENAI_API_HOST $OPENAI_API_HOST
+
 from openai import AzureOpenAI
 import re
 
@@ -20,7 +23,8 @@ def req(msg):
 def ask(input):
     comp = AI.chat.completions.create(model=MODEL, messages=req(input))
     if len(comp.choices) > 0:
-        return comp.choices[0].message.content
+        content = comp.choices[0].message.content
+        return content
     return "ERROR"
 
 

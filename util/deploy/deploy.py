@@ -30,11 +30,15 @@ def extract_args(file):
 #    print(f"cd {dir}")
 #    print(f"TODO: upload {file} {_dir[-2]}/{file}")
 
+package_seen = set()
+
 def deploy_package(package):
     # package args
-    ppath = f"packages/{package}.args"
-    pargs = " ".join(extract_args(ppath))
-    exec(f"nuv package update {package} {pargs}")
+    #ppath = f"packages/{package}.args"
+    #pargs = " ".join(extract_args(ppath))
+    if not package in package_seen:
+        exec(f"nuv package update {package}")
+        package_seen.add(package)
 
 def build_venv(sp):
     exec(f"task build:venv A={sp[1]}/{sp[2]}")

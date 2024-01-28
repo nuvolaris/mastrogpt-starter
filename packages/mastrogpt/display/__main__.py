@@ -9,9 +9,12 @@ def render(src, args):
     
 def board(args):
     fen = args['chess']
-    board = chess.Board(fen)
-    data = {"html": chess.svg.board(board=board) }
-    out = render("html.html", data)
+    try: 
+        board = chess.Board(fen)
+        data = {"html": chess.svg.board(board=board) }
+        out = render("html.html", data)
+    except Exception as e:
+        out = render("message.html", {"title": "Bad Chess Position", "message": str(e)})
     return out
     
 def main(args):

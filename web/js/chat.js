@@ -115,7 +115,7 @@ msgerForm.addEventListener("submit", event => {
   if (invoker) {
     invoker.invoke(input).then(reply => bot(reply))
   } else {
-    bot("Did you select a chat?")
+    bot("Please select a chat, clicking on one button on the top area.")
   }
 });
 

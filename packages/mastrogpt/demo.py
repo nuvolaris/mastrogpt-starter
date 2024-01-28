@@ -24,21 +24,25 @@ def main(args):
     print("input='%s'" %  input)
 
     if input == "":
-        output = """Welcome, this is MastroGPT demo chat.
-Please try asking for code, chess, html. """
+        output = """Welcome, this is MastroGPT demo chat showing what it can display.
+Please select: 'code', 'chess', 'html', 'message'. """
         message = "Watch here for rich output."     
     elif input == "code":
         code = """
-for i in range(1,10):
-    print(i)
+def sum_to(n):
+    sum = 0
+    for i in range(1,n+1):
+        sum += i
+    return sum
 """
         language = "python"
         output = f"Here is some python code.\n```python\n{code}\n```"
     elif input == "chess":
-        chess = "r1bk3r/p2pBpNp/n4n2/1p1NP2P/6P1/3P4/P1P1K3/q5b1"
-        output = f"Check this chess position.\n```fen\n{chess}\n```"    
+        chess = "FEN: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+        output = f"Check this chess position.\n\n{chess}"    
     elif input ==  "html":
         html = """
+<h1>Sample Form</h1>
 <form action="/submit-your-form-endpoint" method="post">
   <div>
     <label for="username">Username:</label>
@@ -54,8 +58,11 @@ for i in range(1,10):
 </form>
 """
         output = f"Here is some HTML.\n```html\n{html}\n```"
+    elif input == "message":
+        message = "This is the message."
+        title = "This is the title"
     else:
-        output =  "Request not supported."
+        output =  "No AI here, please type one of 'code', 'chess', 'html', 'message'"
         
     # state is a counter incremented at any invocation
     res = {

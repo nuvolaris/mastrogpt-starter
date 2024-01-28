@@ -18,17 +18,6 @@ tasks:
             bash util/build-venv.sh 
             $(pwd)/packages/{{.A}}/requirements.txt
             $(pwd)/packages/{{.A}}.zip
-        sources:
-        - "packages/{{.A}}/requirements.txt"
-        generates:
-        - "packages/{{.A}}.zip"
-
-    build:venv:old:
-        requires: { vars: [A] }
-        cmds:
-        - cp "packages/{{.A}}/requirements.txt" "util/requirements.txt"
-        - bash util/virtualenv.sh
-        - mv util/virtualenv.zip "packages/{{.A}}.zip"
         - task: build:action
         sources:
         - "packages/{{.A}}/requirements.txt"
@@ -63,18 +52,18 @@ tasks:
             for i in packages/*/*/requirements.txt
             do pip install -r $i
             done
-            if ! test -e ~/.wskprops
-            then task config
-            fi
+            task config
 
     cli: |
         ipython -i util/init.ipy
     
     serve:
         aliases: [s]
+        ignore_error: true
         cmds:
-        - http-server -a 127.0.0.1 web -c-1 --mimetypes util/mime.types  -P $NUVDEV_HOST
-
+        - bash util/http-serve.sh 
+        - echo "Terminated or another server started..."
+        
     deploy:
         desc: deploy actions
         cmds:
@@ -87,9 +76,11 @@ tasks:
         - task: clean
         - >
             nuv action list | awk 'NR>1 t{ print $1}' | xargs -L1 nuv action delete
+        - >
+            nuv package list | awk 'NR>1 t{ print $1}' | xargs -L1 nuv package delete
  
     devel:
-        desc: incrementa interactive development mode
+        desc: incremental interactive development mode
         cmds:
         - python -m util.deploy -w {{.FLAGS}}
         
@@ -98,18 +89,24 @@ tasks:
         silent: true
         cmds:
         -   |
-            echo -n "Enter nuvolaris.dev Username: "
-            read NUVDEV_USERNAME
-            nuv -login https://nuvolaris.dev "$NUVDEV_USERNAME"
-            if test -e ~/.wskprops
-            then
-                source ~/.wskprops
-                echo "NUVDEV_USERNAME=$NUVDEV_USERNAME" >.env
-                echo "NUVDEV_HOST=https://$NUVDEV_USERNAME.nuvolaris.dev" >>.env
-                echo "OPENAI_API_HOST=https://openai.nuvolaris.io" >>.env
-                echo "$AUTH" | awk -F: '{print "OPENAI_API_KEY=" $1 }' >>.env
-            fi
-
+            while ! test -e ~/.wskprops
+            do
+                echo "*** Configuring Access to nuvolaris.dev with OpenAI ***"
+                echo -n "Enter Username: "
+                read NUVDEV_USERNAME
+                if nuv -login https://nuvolaris.dev "$NUVDEV_USERNAME"
+                then 
+                    source ~/.wskprops
+                    echo "NUVDEV_USERNAME=$NUVDEV_USERNAME" >.env
+                    echo "NUVDEV_HOST=https://$NUVDEV_USERNAME.nuvolaris.dev" >>.env
+                    echo "OPENAI_API_HOST=https://openai.nuvolaris.io" >>.env
+                    echo "$AUTH" | awk -F: '{print "OPENAI_API_KEY=" $1 }' >>.env
+                fi
+            done
+            echo "**************************************************************************************"
+            echo "*** Use 'task devel'  to enter incremental development mode"
+            echo "*** Use 'task deploy' to deploy your app to https://$NUVDEV_USERNAME.nuvolaris.dev"
+            echo "**************************************************************************************"
 
 
 
