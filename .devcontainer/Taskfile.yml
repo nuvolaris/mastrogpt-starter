@@ -14,6 +14,11 @@ tasks:
   build-and-push:
     - test -e .env
     - docker login ghcr.io -u "$GITHUB_USER" -p "$GITHUB_TOKEN"
+    - docker build  -t {{.IMG}}:{{.TAG}} . --push
+
+  buildx-and-push:
+    - test -e .env
+    - docker login ghcr.io -u "$GITHUB_USER" -p "$GITHUB_TOKEN"
     - docker buildx create --use
     - docker run -it --rm --privileged tonistiigi/binfmt --install all
     - docker buildx build --platform linux/amd64,linux/arm64 --no-cache  -t {{.IMG}}:{{.TAG}} . --push

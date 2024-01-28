@@ -47,8 +47,6 @@ tasks:
         cmds:
         -   |
             nuv -version
-            pip install --upgrade pip
-            pip install watchdog
             for i in packages/*/*/requirements.txt
             do pip install -r $i
             done
