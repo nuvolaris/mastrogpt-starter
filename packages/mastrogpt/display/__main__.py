@@ -3,6 +3,7 @@
 
 import chevron
 import chess, chess.svg
+import traceback
 
 def render(src, args):
     with open(src) as f:
@@ -11,12 +12,15 @@ def render(src, args):
 def board(args):
     fen = args['chess']
     try: 
+        print(fen)
         board = chess.Board(fen)
         data = {"html": chess.svg.board(board=board) }
         out = render("html.html", data)
     except Exception as e:
         data =  {"title": "Bad Chess Position", "message": str(e)}
         out = render("message.html", data)
+        traceback.print_exc()
+
     return out
     
 def main(args):

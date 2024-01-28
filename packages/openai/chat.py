@@ -8,9 +8,9 @@ import re
 ROLE = """
 When requested to write code, pick Python.
 When requested to show chess position, always use the FEN notation.
-Wen you show a FEN string, always start it with "FEN:" in upper case and end with a newline.
-When requested to show HTML always include what is in the body tag, 
-but exclude the boilerplate code surrounding the body tag.
+When showing HTML, always include what is in the body tag, 
+but exclude the code surrounding the actual content. 
+So exclude always BODY, HEAD and HTML .
 """
 
 MODEL = "gpt-35-turbo"
@@ -31,13 +31,22 @@ def ask(input):
 """
 import re
 from pathlib import Path
-text = Path("util/chess.txt").read_text()
-text = Path("util/html.txt").read_text()
-text = Path("util/code.txt").read_text()
+text = Path("util/test/chess.txt").read_text()
+text = Path("util/test/html.txt").read_text()
+text = Path("util/test/code.txt").read_text()
 """
 def extract(text):
     res = {}
-    # search for languages
+
+    # search for a chess position
+    pattern = r'(([rnbqkpRNBQKP1-8]{1,8}/){7}[rnbqkpRNBQKP1-8]{1,8} [bw] (-|K?Q?k?q?) (-|[a-h][36]) \d+ \d+)'
+    m = re.findall(pattern, text, re.DOTALL | re.IGNORECASE)
+    #print(m)
+    if len(m) > 0:
+        res['chess'] = m[0][0]
+        return res
+
+    # search for code
     pattern = r"```(\w+)\n(.*?)```"
     m = re.findall(pattern, text, re.DOTALL)
     if len(m) > 0:
@@ -52,12 +61,6 @@ def extract(text):
             return res
         res['language'] = m[0][0]
         res['code'] = m[0][1]
-        return res
-    # search for a chess position
-    pattern = r"FEN: (.*)\n"
-    m = re.findall(pattern, text, re.DOTALL | re.IGNORECASE)
-    if len(m) > 0:
-        res['chess'] = m[0]
         return res
     return res
 
