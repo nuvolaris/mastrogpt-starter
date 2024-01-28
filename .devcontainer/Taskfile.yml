@@ -4,7 +4,7 @@ dotenv:
 - .env
 
 vars:
-  IMG: "ghcr.io/nuvolaris/mastrogpt-devcontainer"
+  IMG: "ghcr.io/nuvolaris/mastrogpt-starter"
   VER: "3.1.0-mastrogpt"
   TAG:
     sh: git describe --tags --abbrev=0 2>/dev/null || echo latest
@@ -16,7 +16,7 @@ tasks:
     - docker login ghcr.io -u "$GITHUB_USER" -p "$GITHUB_TOKEN"
     - docker buildx create --use
     - docker run -it --rm --privileged tonistiigi/binfmt --install all
-    - docker buildx build --platform linux/amd64,linux/arm64  --no-cache -t {{.IMG}}:{{.TAG}} . --push
+    - docker buildx build --platform linux/amd64,linux/arm64 --no-cache  -t {{.IMG}}:{{.TAG}} . --push
 
   image-tag:
     silent: true
