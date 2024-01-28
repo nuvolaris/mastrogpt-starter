@@ -91,7 +91,7 @@ body {
 }
 
 .msg-bubble {
-    max-width: 450px;
+    max-width: 90%;
     padding: 15px;
     border-radius: 15px;
     background: var(--left-msg-bg);
@@ -152,7 +152,7 @@ body {
 
 .msger-send-btn {
     margin-left: 10px;
-    background: rgb(0, 196, 65);
+    background: #326699;
     color: #fff;
     font-weight: bold;
     cursor: pointer;
@@ -160,9 +160,14 @@ body {
 }
 
 .msger-send-btn:hover {
-    background: rgb(0, 180, 50);
+    background: #327799;
 }
 
 .msger-chat {
     background-color: #fcfcfe;
+}
+
+.msg-text {
+    overflow: auto;
+    max-width: 100%;
 }

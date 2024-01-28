@@ -12,7 +12,7 @@ def exec(cmd):
     global dry_run
     print("$", cmd)
     if not dry_run:
-        Popen(cmd, shell=True, env=os.environ)
+        Popen(cmd, shell=True, env=os.environ).wait()
 
 def extract_args(file):
     res = []
@@ -24,21 +24,23 @@ def extract_args(file):
     return res
 
 # root _dir and _file (split)
-#def deploy_web(_dir, _file):
+# def deploy_web(_dir, _file):
 #    dir = "/".join(_dir)
 #    file = "/".join(_file)
 #    print(f"cd {dir}")
 #    print(f"TODO: upload {file} {_dir[-2]}/{file}")
 
-package_seen = set()
+package_done = set()
 
 def deploy_package(package):
+    global package_done
     # package args
-    #ppath = f"packages/{package}.args"
-    #pargs = " ".join(extract_args(ppath))
-    if not package in package_seen:
-        exec(f"nuv package update {package}")
-        package_seen.add(package)
+    ppath = f"packages/{package}.args"
+    pargs = " ".join(extract_args(ppath))
+    cmd = f"nuv package update {package} {pargs}"
+    if not cmd in package_done:
+        exec(cmd)
+        package_done.add(cmd)
 
 def build_venv(sp):
     exec(f"task build:venv A={sp[1]}/{sp[2]}")

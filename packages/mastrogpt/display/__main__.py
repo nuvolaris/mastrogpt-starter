@@ -1,5 +1,6 @@
 #--web true
 #--kind python:default
+
 import chevron
 import chess, chess.svg
 
@@ -14,7 +15,8 @@ def board(args):
         data = {"html": chess.svg.board(board=board) }
         out = render("html.html", data)
     except Exception as e:
-        out = render("message.html", {"title": "Bad Chess Position", "message": str(e)})
+        data =  {"title": "Bad Chess Position", "message": str(e)}
+        out = render("message.html", data)
     return out
     
 def main(args):

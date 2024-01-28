@@ -38,7 +38,7 @@ def sum_to(n):
         language = "python"
         output = f"Here is some python code.\n```python\n{code}\n```"
     elif input == "chess":
-        chess = "FEN: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+        chess = "FEN: rnbqkbnr/pp1ppppp/8/2p5/4P3/8/PPPP1PPP/RNBQKBNR w KQkq c6 0 2"
         output = f"Check this chess position.\n\n{chess}"    
     elif input ==  "html":
         html = """
