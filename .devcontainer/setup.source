@@ -101,6 +101,8 @@ export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init --path)"
 eval "$(pyenv init -)"
 pyenv install $PYENV_VERSION -s && touch $PYENV_ROOT/$PYENV_VERSION
+pip install --upgrade pip
+
 
 # install yq
 if ! which yq >/dev/null

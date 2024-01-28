@@ -105,8 +105,8 @@ tasks:
                 fi
             done
             echo "**************************************************************************************"
-            echo "*** Use 'task devel'  to enter incremental development mode"
-            echo "*** Use 'task deploy' to deploy your app to https://$NUVDEV_USERNAME.nuvolaris.dev"
+            echo "*** Type 'deploy' to deploy your app to https://$NUVDEV_USERNAME.nuvolaris.dev"
+            echo "*** Type 'devel'  to enter incremental development mode"
             echo "**************************************************************************************"
 
 
