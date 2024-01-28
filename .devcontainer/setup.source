@@ -191,6 +191,11 @@ then
      pip install -r  ~/.pyenv/requirements_common.txt
 fi
 
+
+# devel and deploy
+alias devel="task devel"
+alias deploy="task deploy"
+
 # setup
 if test -e Taskfile.yml
 then task setup
