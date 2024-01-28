@@ -70,14 +70,10 @@ tasks:
     cli: |
         ipython -i util/init.ipy
     
-    serve1:
+    serve:
         aliases: [s]
         cmds:
         - http-server -a 127.0.0.1 web -c-1 --mimetypes util/mime.types  -P $NUVDEV_HOST
-
-
-    serve: sleep inf
-
 
     deploy:
         desc: deploy actions
