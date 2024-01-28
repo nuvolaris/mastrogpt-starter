@@ -14,6 +14,18 @@ tasks:
     build:venv:
         requires: { vars: [A] }
         cmds:
+        -   >
+            bash util/build-venv.sh 
+            $(pwd)/packages/{{.A}}/requirements.txt
+            $(pwd)/packages/{{.A}}.zip
+        sources:
+        - "packages/{{.A}}/requirements.txt"
+        generates:
+        - "packages/{{.A}}.zip"
+
+    build:venv:old:
+        requires: { vars: [A] }
+        cmds:
         - cp "packages/{{.A}}/requirements.txt" "util/requirements.txt"
         - bash util/virtualenv.sh
         - mv util/virtualenv.zip "packages/{{.A}}.zip"
@@ -46,6 +58,7 @@ tasks:
         cmds:
         -   |
             nuv -version
+            pip install --upgrade pip
             pip install watchdog
             for i in packages/*/*/requirements.txt
             do pip install -r $i
@@ -57,10 +70,14 @@ tasks:
     cli: |
         ipython -i util/init.ipy
     
-    serve:
+    serve1:
         aliases: [s]
         cmds:
         - http-server -a 127.0.0.1 web -c-1 --mimetypes util/mime.types  -P $NUVDEV_HOST
+
+
+    serve: sleep inf
+
 
     deploy:
         desc: deploy actions
@@ -71,8 +88,9 @@ tasks:
         ignore_error: true
         desc: undeploy actions
         cmds:
+        - task: clean
         - >
-            nuv action list | awk 'NR>1 { print $1}' | xargs -L1 nuv action delete
+            nuv action list | awk 'NR>1 t{ print $1}' | xargs -L1 nuv action delete
  
     devel:
         desc: incrementa interactive development mode
@@ -92,7 +110,7 @@ tasks:
                 source ~/.wskprops
                 echo "NUVDEV_USERNAME=$NUVDEV_USERNAME" >.env
                 echo "NUVDEV_HOST=https://$NUVDEV_USERNAME.nuvolaris.dev" >>.env
-                echo "OPENAI_API_HOST=openai.sciabarra.net:6443" >>.env
+                echo "OPENAI_API_HOST=https://openai.nuvolaris.io" >>.env
                 echo "$AUTH" | awk -F: '{print "OPENAI_API_KEY=" $1 }' >>.env
             fi
 

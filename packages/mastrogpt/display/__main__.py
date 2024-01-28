@@ -1,3 +1,5 @@
+#--web true
+#--kind python:default
 import chevron
 import chess, chess.svg
 

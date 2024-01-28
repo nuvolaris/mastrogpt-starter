@@ -1,3 +1,4 @@
+#--web true
 import json
 
 def main(arg):

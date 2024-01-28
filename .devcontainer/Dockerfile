@@ -42,5 +42,9 @@ WORKDIR /home/nuvolaris
 ADD setup.source /home/nuvolaris/.bashrc
 ADD init.sh /usr/sbin/init.sh
 RUN /bin/bash -c 'source /home/nuvolaris/.bashrc'
+ENV NUV_BRANCH=3.0.0-testing
+ENV LANG=en_US.UTF-8
+ENV LANGUAGE=en_US.UTF-8
+ENV LC_ALL=en_US.UTF-8
 # proxy to docker and keep alive
 ENTRYPOINT ["/bin/bash", "/usr/sbin/init.sh"]

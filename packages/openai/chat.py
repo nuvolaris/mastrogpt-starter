@@ -1,7 +1,4 @@
-"""
-%cd packages/openai
-from chat import *
-"""
+#--web true
 from openai import AzureOpenAI
 import re
 
@@ -33,7 +30,6 @@ from pathlib import Path
 text = Path("util/chess.txt").read_text()
 text = Path("util/html.txt").read_text()
 text = Path("util/code.txt").read_text()
-text
 """
 def extract(text):
     res = {}
@@ -54,17 +50,16 @@ def extract(text):
         res['code'] = m[0][1]
         return res
     # search for a chess position
-    pattern = r"FEN: (.*)"
+    pattern = r"FEN: (.*)\n"
     m = re.findall(pattern, text, re.DOTALL | re.IGNORECASE)
     if len(m) > 0:
         res['chess'] = m[0]
         return res
     return res
-#--web true
 
 def main(args):
     global AI
-    (key, host) = (args["OPENAI_KEY"], args["OPENAI_HOST"])
+    (key, host) = (args["OPENAI_API_KEY"], args["OPENAI_API_HOST"])
     AI = AzureOpenAI(api_version="2023-12-01-preview", api_key=key, azure_endpoint=host)
 
     input = args.get("input", "")

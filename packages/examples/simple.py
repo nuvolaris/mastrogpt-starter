@@ -2,7 +2,7 @@
 #--kind python:default
 def main(args):
     return {
-        "body": "hello"
+        "body": "hello world"
     }
 
 

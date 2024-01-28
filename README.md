@@ -28,7 +28,6 @@ You can run Nuvolaris Starter:
 - Wait the setup is complete
 - Provide Nuvolaris username and password
 
-
 You are ready to develop!
 
 # Developtment

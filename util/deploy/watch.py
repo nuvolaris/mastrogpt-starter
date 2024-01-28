@@ -1,3 +1,4 @@
+ALLOWED = set(["py", "txt", "args"])
 import os, time
 from subprocess import Popen
 from watchdog.observers import Observer
@@ -11,9 +12,14 @@ class ChangeHandler(FileSystemEventHandler):
     last_modified = {}
 
     def on_any_event(self, event):
-        if event.is_directory or event.event_type != "modified":
-            return
+        if event.event_type != "modified": return
+        if event.is_directory: return
         src = event.src_path
+
+        rs = src.rsplit(".", -1)
+        if len(rs) < 2: return
+        if not rs[-1] in ALLOWED: return
+
         cur = time.time()
         last = self.last_modified.get(src, 0)
         #print(event, cur, last)

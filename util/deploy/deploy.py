@@ -10,10 +10,9 @@ def set_dry_run(b):
 
 def exec(cmd):
     global dry_run
-    if dry_run:
-        print(cmd)
-        return
-    Popen(cmd, shell=True, env=os.environ)
+    print("$", cmd)
+    if not dry_run:
+        Popen(cmd, shell=True, env=os.environ)
 
 def extract_args(file):
     res = []
