@@ -1,9 +1,9 @@
 #--web true
 #--kind python:default
 
-from .hello import hello
+import hello
 
 def main(args):
     return { 
-        "body": hello()
+        "body": hello.hello()
     }
