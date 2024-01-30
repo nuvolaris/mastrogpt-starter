@@ -1,11 +1,11 @@
 #!/bin/bash
-PID=$(cat /tmp/nuv-poll.pid)
+PID=$(cat /tmp/nuv-poll.pid 2>/dev/null)
 if test -e /proc/$PID
-then kill -9 $PID
+then kill -9 $PID 
 fi
 nuv -wsk activation poll & echo $! >/tmp/nuv-poll.pid
 
-PID=$(cat /tmp/http-serve.pid)
+PID=$(cat /tmp/http-serve.pid 2>/dev/null)
 if test -e /proc/$PID
 then kill -9 $PID
 fi

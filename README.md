@@ -30,13 +30,14 @@ You can run Nuvolaris Starter:
 
 You are ready to develop!
 
-# Developtment
+# Development
 
 Use:
 
-- `task devel` to run a local development environment
-- `task deploy` to deploy everything in cloud
-- `task cli`  python REPL for debug
+- `devel` to run a local development environment
+- `deploy` to deploy everything in cloud
+
+There are some other useful commands, type `task` to see them.
 
 # Setup and Config
 

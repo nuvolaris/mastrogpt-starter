@@ -39,15 +39,16 @@ def main(args):
     elif "chess" in args:
         out = board(args)
 
+    elif "upload" in args:
+        if not "title" in args:
+            args["title"] = "Upload"
+        out = render("upload.html", args)
+
     elif "message" in args:
         if not "title" in args:
             args["title"] = "Message"
         out = render("message.html", args)
 
-    elif "upload" in args:
-        if not "title" in args:
-            args["title"] = "Upload"
-        out = render("upload.html", args)
 
     code = 200 if out != "" else 204
     return {
