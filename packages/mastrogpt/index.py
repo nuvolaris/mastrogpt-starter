@@ -1,5 +1,6 @@
-#--web true
+# --web true
 import json
+
 
 def main(_):
     data = {
@@ -16,10 +17,14 @@ def main(_):
                 "name": "Wordpress",
                 "url": "openai/wordpress"
             },
-            { 
-                "name": "Demo", 
+            {
+                "name": "Demo",
                 "url": "mastrogpt/demo",
-            } 
+            },
+            {
+                "name": "Calendar",
+                "url": "google/chat"
+            }
         ]
     }
     return {"body": data}
