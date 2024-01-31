@@ -1,7 +1,7 @@
 #--web true
 import json
 
-def main(arg):
+def main(_):
     data = {
         "services": [
             { 

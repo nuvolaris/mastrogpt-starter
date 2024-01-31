@@ -14,6 +14,10 @@ window.addEventListener('message', async function(ev) {
         if(t !=  "") {
             let content =  document.getElementById("_display_container_");
             content.innerHTML = t;
+            document.dispatchEvent(new Event('DOMContentLoaded', {
+                bubbles: true,
+                cancelable: true
+            }));
         }
     })
     .catch(e => {

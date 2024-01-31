@@ -6,6 +6,9 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('uploadButton').addEventListener('click', function() {
+            
+            console.log("click!")
+
             var file = document.getElementById('fileInput').files[0];
             if (!file) {
                 return alert('Seleziona un file prima di caricare.');
