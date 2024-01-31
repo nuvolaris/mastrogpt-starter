@@ -1,36 +1,36 @@
+<h3>Warning: Files uploaded here are <b>PUBLIC!</b></h3>
+
 <div>
     <input type="file" id="fileInput" />
     <button id="uploadButton">Carica</button>
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        document.getElementById('uploadButton').addEventListener('click', function() {
-            
-            console.log("click!")
+    //console.log("registering events")
+    document.getElementById('uploadButton').addEventListener('click', function () {
+        console.log("click!")
+        var file = document.getElementById('fileInput').files[0];
+        if (!file) {
+            return alert('Seleziona un file prima di caricare.');
+        }
 
-            var file = document.getElementById('fileInput').files[0];
-            if (!file) {
-                return alert('Seleziona un file prima di caricare.');
-            }
+        var reader = new FileReader();
+        reader.onload = function (event) {
+            uploadFile(event.target.result, file.name);
+        };
+        reader.readAsDataURL(file);
+    });
 
-            var reader = new FileReader();
-            reader.onload = function(event) {
-                uploadFile(event.target.result, file.name);
-            };
-            reader.readAsDataURL(file);
-        });
+    function uploadFile(base64File, fileName) {
+        const actionUrl = '/api/my/mastrogpt/upload'; // URL della tua action OpenWhisk
 
-        function uploadFile(base64File, fileName) {
-            const actionUrl = '/api/my/mastrogpt/upload'; // URL della tua action OpenWhisk
-
-            fetch(actionUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ file: base64File, filename: fileName })
-            })
+        fetch(actionUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ file: base64File, filename: fileName })
+        })
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok.');
@@ -43,6 +43,5 @@
             .catch(error => {
                 console.error('Errore nel caricamento:', error);
             });
-        }
-    });
+    }
 </script>
