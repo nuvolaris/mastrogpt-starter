@@ -1,4 +1,5 @@
 #--kind python:default
+#--web true
 #--param MINIO_ACCESS_KEY $MINIO_ACCESS_KEY
 #--param MINIO_SECRET_KEY $MINIO_SECRET_KEY
 #--param MINIO_DATA_BUCKET $MINIO_DATA_BUCKET
@@ -13,13 +14,10 @@ def main(args):
 
     # Recupero le variabili d'ambiente
     access_key = args['MINIO_ACCESS_KEY']
-    print(access_key)
     secret_key = args['MINIO_SECRET_KEY']
-    print(secret_key)
     bucket_name = args['MINIO_DATA_BUCKET']
     host = args['MINIO_HOST']
     port = args['MINIO_PORT']
-    # secure = args['NUVOLARIS_MINIO'].lower() == 'true'
 
     # Connessione a MinIO
     client = Minio(f"{host}:{port}",
@@ -37,6 +35,6 @@ def main(args):
     # Caricamento del file su MinIO
     try:
         client.put_object(bucket_name, file_name, io.BytesIO(file_data), length=len(file_data))
-        return {"status": "File caricato con successo"}
+        return {"body": {"status": "File caricato con successo"}}
     except Exception as e:
-        return {"status": "Errore", "details": str(e)}
+        return {"body": {"status": "Errore", "details": str(e)}}

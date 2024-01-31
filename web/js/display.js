@@ -10,7 +10,7 @@ window.addEventListener('message', async function(ev) {
     })
     .then(r => r.text())
     .then(t => {
-        console.log(t)
+        //console.log(t)
         if(t !=  "") {
             let content =  document.getElementById("_display_container_");
             content.innerHTML = t;
