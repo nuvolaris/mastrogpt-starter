@@ -1,5 +1,5 @@
 #--web true
-#--param OPENAI_API_KEY $OPENAI_API_KEY
+#--param OPENAI_AI_KEY_CALENDAR $OPENAI_AI_KEY_CALENDAR
 
 from openai import OpenAI
 
@@ -21,7 +21,7 @@ def ask(user_input):
 def main(args):
     print('input is', args.get('input'))
     global AI
-    AI = OpenAI(api_key=args.get("OPEN_AI_KEY_CALENDAR"))
+    AI = OpenAI(api_key=args.get("OPENAI_AI_KEY_CALENDAR"))
 
     user_input = args.get("input", "")
     output = ask(user_input)
