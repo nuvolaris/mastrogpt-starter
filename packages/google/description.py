@@ -1,6 +1,5 @@
 #--web true
-#--kind python:default
-#--param OPEN_AI_KEY_CALENDAR $OPEN_AI_KEY_CALENDAR
+#--param OPENAI_API_KEY $OPENAI_API_KEY
 
 from openai import OpenAI
 

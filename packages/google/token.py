@@ -1,5 +1,7 @@
 #--web true
-#--kind python:default
+#--param GOOGLE_CLIENT_ID $GOOGLE_CLIENT_ID
+#--param GOOGLE_REDIRECT_URI $GOOGLE_REDIRECT_URI
+#--param GOOGLE_CLIENT_SECRET $GOOGLE_CLIENT_SECRET
 
 import requests
 
@@ -7,15 +9,15 @@ def main(args):
 
     code=args.get('code')
 
-    client_id = args.get('CLIENT_ID')
-    client_secret = args.get('CLIENT_SECRET')
+    client_id = args.get('GOOGLE_CLIENT_ID')
+    client_secret = args.get('GOOGLE_CLIENT_SECRET')
     token_endpoint = 'https://oauth2.googleapis.com/token'
 
     request_data = {
         'code': code,
         'client_id': client_id,
         'client_secret': client_secret,
-        'redirect_uri': args.get('URL_TO_REDIRECT_CALLBACK_LOCAL'),
+        'redirect_uri': args.get('GOOGLE_REDIRECT_URI'),
         'grant_type': 'authorization_code'
     }
 
