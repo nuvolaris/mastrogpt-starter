@@ -2,6 +2,7 @@
 #--param OPENAI_API_KEY $OPENAI_API_KEY
 #--param OPENAI_API_HOST $OPENAI_API_HOST
 #--param PUBLIC_URL_CALENDAR_ID $PUBLIC_URL_CALENDAR_ID
+#--param GOOGLE_REDIRECT_URI $GOOGLE_REDIRECT_URI
 
 import urllib.parse
 import re
@@ -21,7 +22,7 @@ def main(args):
         res = {
             "output": "click on the button on the right to authenticate",
             "title": "OpenAI Chat",
-            "message": generate_authorization_url(args)
+            "html":generate_authorization_url(args)
         }    
     
 
@@ -29,7 +30,7 @@ def main(args):
 
 def generate_authorization_url(args):
     client_id = args.get('PUBLIC_URL_CALENDAR_ID')
-    redirect_uri = 'http://127.0.0.1:5173/calendar'
+    redirect_uri = args.get('GOOGLE_REDIRECT_URI')
     scope = 'https://www.googleapis.com/auth/calendar'
     response_type = 'code'
 
@@ -51,11 +52,4 @@ def html_button_from_code(code):
         </a>
     </div>
     """
-    return html_output(html)
-
-def html_output(text):
-    res = {}
-
-    res['html'] = text
-    return res
-
+    return html
