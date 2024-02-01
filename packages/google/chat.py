@@ -1,8 +1,6 @@
 #--web true
 #--param OPENAI_API_KEY $OPENAI_API_KEY
 #--param OPENAI_API_HOST $OPENAI_API_HOST
-#--param PUBLIC_URL_CALENDAR_ID $PUBLIC_URL_CALENDAR_ID
-#--param GOOGLE_REDIRECT_URI $GOOGLE_REDIRECT_URI
 
 import urllib.parse
 import re

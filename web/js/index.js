@@ -13,12 +13,34 @@ function getUrlParameter(name) {
 
 document.addEventListener("DOMContentLoaded", function () {
   var code = getUrlParameter("code");
+
   if (code) {
     console.log("Code:", code);
-    //todo call backend to get token
-  }
 
-  removeParameters(["code", "scope"]);
+    const params = {
+      code: code,
+    };
+
+    removeParameters(["code", "scope"]);
+    let base = location.href.replace(/index\.html$/, "");
+
+    const urlWithParams = new URL(base + "api/my/google/token");
+    urlWithParams.search = new URLSearchParams(params).toString();
+    fetch(urlWithParams)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((e) => {
+        console.error(e);
+        alert("ERROR: cannot load token");
+      });
+  }
 
   let base = location.href.replace(/index\.html$/, "");
 
