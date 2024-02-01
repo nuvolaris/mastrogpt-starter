@@ -9,10 +9,9 @@
 from minio import Minio
 import base64
 import io
+import json
 
 def main(args):
-    if 'file' in args: del args['file']
-    print(args)
     
     # Connection to MinIO
     bucket_name = args['MINIO_DATA_BUCKET']
@@ -30,6 +29,12 @@ def main(args):
         try:
             file_data = base64.b64decode(base64_file.split(',')[1])
             client.put_object(bucket_name, file_name, io.BytesIO(file_data), length=len(file_data))
-            return {"body": {"status": "Upload: success."}}
+            return {"body": "Success"}
         except Exception as e:
-            return {"body": {"error": "ERROR", "details": str(e)}}
+            return {"error": str(e)}
+    else:
+        print(dir(client))
+        res = []
+        for obj in client.list_objects(bucket_name):
+            res.append({"name": obj.object_name, "size": obj.size})
+        return {"body": res}

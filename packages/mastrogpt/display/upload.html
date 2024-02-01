@@ -1,17 +1,32 @@
-<h3>Warning: Files uploaded here are <b>PUBLIC!</b></h3>
+<h3>File Upload</h3>
+
+<big><b>Warning:</b> You cannot upload files larges than 64M</big>
+
+<table id="files">
+    <thead>
+        <tr>
+            <th>File</th>
+            <th>Size</th>
+        </tr>
+    </thead>
+    <tbody id="files"></tbody>
+</table>
+<script>
+
+</script>
 
 <div>
     <input type="file" id="fileInput" />
-    <button id="uploadButton">Carica</button>
+    <button id="uploadButton">Upload</button>
 </div>
 
 <script>
-    //console.log("registering events")
+    // upload event
     document.getElementById('uploadButton').addEventListener('click', function () {
         console.log("click!")
         var file = document.getElementById('fileInput').files[0];
         if (!file) {
-            return alert('Seleziona un file prima di caricare.');
+            return alert('Please select a file to upload.');
         }
 
         var reader = new FileReader();
@@ -21,6 +36,7 @@
         reader.readAsDataURL(file);
     });
 
+    // upload a file
     function uploadFile(base64File, fileName) {
         const actionUrl = '/api/my/mastrogpt/upload'; // URL della tua action OpenWhisk
 
@@ -38,10 +54,31 @@
                 return response.text();
             })
             .then(data => {
-                console.log('File caricato con successo:', data);
+                listFiles()
+                alert(data)
             })
             .catch(error => {
-                console.error('Errore nel caricamento:', error);
+                alert("ERROR! Check console for details.")
+                console.error(error);
             });
     }
+
+    // list files in the bucket
+    function listFiles() {
+        fetch('/api/my/mastrogpt/upload')
+            .then(response => response.json())
+            .then(data => {
+                const tbody = document.getElementById('files');
+                tbody.innerHTML = ''; // Clear existing rows
+    
+                // Iterate over each file and add a row to the table
+                data.forEach(file => {
+                    const row = `<tr><td>${file.name}</td><td>${file.size}</td></tr>`;
+                    tbody.innerHTML += row;
+                });
+            })
+            .catch(error => console.error('Error fetching files:', error));
+    }
+    listFiles()
+    
 </script>
