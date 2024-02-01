@@ -1,4 +1,5 @@
 #--web true
+import json, requests
 
 def main(args):
 
@@ -75,6 +76,12 @@ def sum_to(n):
     elif input == "upload":
         upload = "Upload your document"
         output = "Here is your upload form."
+    elif input.startswith("wordpress"):
+        pagenr = input.split(" ")[-1]
+        if pagenr == "wordpress": pagenr = "110"
+        pagejs = json.loads(requests.get(f"https://critical-work.com/wp-json/wp/v2/pages/{pagenr}").content)
+        html = pagejs["content"]["rendered"]
+        output = "Please check the right area."
     else:
         output = NOTE
         

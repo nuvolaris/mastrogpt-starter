@@ -48,7 +48,7 @@ class Invoker {
       .then(r => r.json())
       .then(r => {
         // got answer from the backend
-        console.log(r)
+        //console.log(r)
         this.state = r.state
         let data = r
         let output = data.output
