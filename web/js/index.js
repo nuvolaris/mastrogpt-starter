@@ -4,8 +4,8 @@ let display = document.getElementById("display").contentWindow
 
 //TODO dot env
 const config = {
-    clientId: "insert-here",
-    redirectUri: "insert-here"
+    clientId: "50639526067-dma0d7nqjeof22hboq3cv5j5e8kc0g75.apps.googleusercontent.com",
+    redirectUri: "https://zany-dollop-59x95qxx4q7cqgj-8080.app.github.dev/"
 };
 
 document.getElementById('google-auth-button').addEventListener('click', function() {
@@ -20,40 +20,60 @@ function getUrlParameter(name) {
     return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
 }
 
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", async function () {
+    try {
+        const code = getUrlParameter('code');
+        removeParameters(['code', 'scope']);
+        const base = location.href.replace(/index\.html$/, "");
 
-    var code = getUrlParameter('code');
+        if (code) {
+            console.log('Calling display to post message');
+            await displayLoader();
+            console.log('Display OK, starting Google Flow');
+            startGoogleFlow(code);
+        }
 
-    if (code) {
-        startGoogleFlow(code);
-    }    
+        const data = await fetchIndex(base + "api/my/mastrogpt/index");
+        console.log(data);
 
-    let base = location.href.replace(/index\.html$/, "")
-
-    // retrieve index
-    fetch(base + "api/my/mastrogpt/index")
-        .then((x) => x.json())
-        .then((data) => {
-            console.log(data);
-            let insert = document.getElementById("top-area");
-            data.services.forEach(service => {
-                const button = document.createElement("button");
-                button.textContent = service.name;
-                button.onclick = function() {
-                    let url = base + "api/my/" + service.url;
-                    chat.postMessage({ name: service.name, url: url });
-                };
-                let p = document.createElement("span");
-                p.appendChild(button);
-                insert.appendChild(p);
-                console.log("enabled " + service.name);
-            });
-        })
-        .catch((e) => {
-            console.log(e);
-            alert("ERROR: cannot load index");
+        const insert = document.getElementById("top-area");
+        data.services.forEach((service) => {
+            const button = createServiceButton(base, service);
+            insert.appendChild(button);
+            console.log(`Enabled ${service.name}`);
         });
+    } catch (error) {
+        console.error(error);
+        alert("ERROR: Cannot load index");
+    }
 });
+
+function displayLoader() {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            display.postMessage({ type: 'html', html: '<h1 id="loader">Loading...</h1>' }, '*');
+            resolve();
+        }, 100);
+    });
+}
+
+async function fetchIndex(url) {
+    const response = await fetch(url);
+    return response.json();
+}
+
+function createServiceButton(base, service) {
+    const button = document.createElement("button");
+    button.textContent = service.name;
+    button.onclick = function () {
+        const url = base + "api/my/" + service.url;
+        chat.postMessage({ name: service.name, url: url });
+    };
+    const span = document.createElement("span");
+    span.appendChild(button);
+    return span;
+}
+
 
 function removeParameters(parametersToRemove) {
     var newUrl = window.location.href;
@@ -68,7 +88,6 @@ function startGoogleFlow(code) {
         code: code
     };
 
-    removeParameters(['code', 'scope']);
     let base = location.href.replace(/index\.html$/, "");
 
     const urlWithParams = new URL(base + "api/my/google/token");
@@ -82,11 +101,9 @@ function startGoogleFlow(code) {
             return response.json();
         })
         .then(data => {
-            console.log(data.token);
             
             getEvents(data.token)
                 .then(events => {
-                    console.log('events', events);
                     askEventsDescription(events);
                 
                 })
@@ -101,7 +118,6 @@ function startGoogleFlow(code) {
 }
 
 function getEvents(token) {
-    console.log('get events');
     
     const apiUrl = 'https://www.googleapis.com/calendar/v3/calendars/primary/events';
     
@@ -172,6 +188,7 @@ function askEventsDescription(events) {
         } 
     })
     .catch(error => {
+        display.postMessage({ type: 'message', message: '<div id="error">Error loading description</div>' }, '*');
         console.error(error);
         alert("ERROR: cannot load description");
     });
