@@ -4,6 +4,8 @@ class Config:
     START_PAGE = "mission"
     EMAIL = "michele@nuvolaris.io"
     WELCOME = "Benvenuto al sito Web di Ambra Danesin."
+    THANKS = "Grazie di avermi fornito la tua email, ti contatterò presto."
+    ERROR = "Purtroppo sembra che ci sia qualche problema a registrare la tua email."
     ROLE = """
 You are Ambra Danesin, a recruiter who cares of people.
 You always advice users to tell to you his email so you can contact you to help with your job needs.
@@ -21,9 +23,8 @@ If the user tells your email, thanks him and say you will contact him to provide
 #--param SMTP_PORT $SMTP_PORT
 
 
-import re
-import json
-import smtplib
+import re, json
+import smtplib, email
 import requests
 import traceback
 from openai import AzureOpenAI
@@ -40,7 +41,7 @@ class EmailServer:
         self.messages.append(msg)
 
     def send_mail(self, sender, subject, msg):
-        message = """\
+        text = """\
 From: %s
 To: %s
 Reply-To: %s
@@ -48,11 +49,20 @@ Subject: %s
 
 %s
 """ % (Config.EMAIL,Config.EMAIL, sender, subject, msg)
+
+        from email.mime.multipart import MIMEMultipart
+        from email.mime.text import MIMEText
+
+        msg = MIMEMultipart("alternative")
+        msg["Subject"] = subject
+        part1 = MIMEText(text, "plain")
+        msg.attach(part1)
+
         try:
             smtp = smtplib.SMTP(self.server, port=self.port)
             smtp.starttls()
             smtp.login(self.user, self.password)
-            smtp.sendmail(Config.EMAIL, Config.EMAIL, message)
+            smtp.sendmail(Config.EMAIL, Config.EMAIL, msg.as_string().encode('ascii'))
             smtp.quit()
             return "OK"
         except Exception as e:
@@ -60,16 +70,26 @@ Subject: %s
 
     # search for an email in a message and notify the user provided an email
     def check_email_and_notify(self, input):
-        email_regex = r"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
+        email_regex = r"([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})"
         r = re.findall(email_regex, input, re.MULTILINE)
-        if r:
-            message = "Contact from chatbot: [%s]\n---\n" % r[0]
+        if len(r)>0:
+            email = r[0]
+            print("found", email)
+            
+            #check = chat.verify_email(email)
+            #if check != "OK":
+            #    return check
+            
+            message = f"Contact from chatbot: [{email}]\n---\n"
             message += "\n".join(self.messages)
-            res = self.send_mail(r[0], "Contact from Chatbot", message)
+            res = self.send_mail(email, "Contact from Chatbot", message)
             if res  == "OK":
                 self.messages = []
-                return True
-        return False
+                return Config.THANKS
+            else:
+                Config.ERROR
+                print("error in sending", res)
+        return None
         
 class ChatBot:
     def __init__(self, args):
@@ -83,6 +103,7 @@ class ChatBot:
         req = [ {"role": "system", "content": role}, 
                 {"role": "user", "content": input}]
         print(req)
+        
         try:
             comp = self.ai.chat.completions.create(model=Config.MODEL, messages=req)
             if len(comp.choices) > 0:
@@ -90,6 +111,7 @@ class ChatBot:
                 return content
         except Exception as e:
             print(e)
+        
         return None
 
     def identify_topic(self, topics, input):
@@ -100,7 +122,14 @@ You only reply with the name of the topic.
 """ % topics
         request = "Request: %s. What is the topic?" % input
         return self.ask(request, role=role)  
-
+    
+    def verify_email(self, email):
+        role = """
+You are checking if the email address provided is real or looks fake.
+If it is OK just say 'OK', otherwise explain in italian what is wrong.
+""" % email
+        request = f"Is this email real or fake: {email} ?" 
+        return self.ask(request, role=role)  
 
 class Website:
     def __init__(self):
@@ -131,7 +160,6 @@ class Website:
     
     def topics(self):
         return ", ".join(self.name2id.keys())
-        
 
 AI = None
 Web = None
@@ -157,11 +185,11 @@ def main(args):
             res['message'] =  Config.WELCOME
         return {"body": res }
     
+    
     Email.add_message(f">>> {input}")
-
-    if Email.check_email_and_notify(input):
-        output = "\nGrazie di avermi fornito la tua email, ti ricontatterò presto."
-    else:
+    print(input)
+    output = Email.check_email_and_notify(input)
+    if output is None:
         output = AI.ask(input)
 
     if output is None:
@@ -184,11 +212,6 @@ def main(args):
 %cd packages/openai
 from wordpress import *
 
-Email = EmailServer(args)
-Email.send_mail("michele@sciabarra.com", "Contact", "How are you?")
-Email.add_message("prova")
-Email.check_email_and_notify("I am michele@sciabarra.com")
-
 Web = Website()
 Web.get_page_content_by_name("mission")
 Web.topics()
@@ -196,8 +219,14 @@ Web.topics()
 AI = ChatBot(args)
 AI.ask("who are you?")
 AI.ask("who are you?", role="you are sailor moon")
-topics = Web.topics()
+topics = Web.topics() ; print(topics)
+page = AI.identify_topic(topics, "di cosa ti occupi") ; print(page)
 
-page = AI.identify_topic(topics, "di cosa ti occupi")
 Web.get_page_content_by_name(page)
+
+Email = EmailServer(args)
+Email.send_mail("michele@sciabarra.com", "Contact", "How are you?")
+Email.add_message("prova")
+Email.check_email_and_notify("I am michele@sciabarra.com")
+Email.verify_email("example@example.com")
 """
