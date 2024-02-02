@@ -1,4 +1,4 @@
-ws="https://critical-work.com"
+ws="https://demo.cosmoswp.com/demo-3/"
 
 !curl -sL "{ws}/wp-json/wp/v2/pages" | jq '.[]'
 !curl -sL "{ws}/wp-json/wp/v2/pages" | jq '.[] | {{id, link}}'

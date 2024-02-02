@@ -1,7 +1,10 @@
 # invoked by ipython from the root folder
 from pathlib import Path
 lines = Path(".env").read_text().splitlines()
-args = { line.split("=",1)[0]: line.split("=",1)[-1]  for line in lines}
+try: lines += Path("packages/.env").read_text().splitlines()
+except: pass
+    
+args = { line.split("=",1)[0]: line.split("=",1)[-1]  for line in lines if not line.startswith("#")}
 
 %load_ext autoreload
 %autoreload 2
