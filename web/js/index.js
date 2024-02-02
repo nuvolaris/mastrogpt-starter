@@ -2,6 +2,16 @@
 let chat = document.getElementById("chat").contentWindow
 let display = document.getElementById("display").contentWindow
 
+//TODO dot env
+const config = {
+    clientId: "insert-here",
+    redirectUri: "insert-here"
+};
+
+document.getElementById('google-auth-button').addEventListener('click', function() {
+    window.location.href = `https://accounts.google.com/o/oauth2/auth?client_id=${config.clientId}&redirect_uri=${config.redirectUri}&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcalendar&response_type=code`;
+});
+
 function getUrlParameter(name) {
     
     name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');

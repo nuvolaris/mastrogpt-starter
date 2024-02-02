@@ -11,10 +11,6 @@ def main(arg):
             {
                 "name": "OpenAI",
                 "url": "openai/chat"
-            },
-            {
-                "name": "Calendar",
-                "url": "google/chat"
             }
         ]
     }
