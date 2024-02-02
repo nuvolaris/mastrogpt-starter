@@ -1,10 +1,3 @@
-#--web true
-#--param OPENAI_API_KEY $OPENAI_API_KEY
-#--param OPENAI_API_HOST $OPENAI_API_HOST
-
-from openai import AzureOpenAI
-import re
-
 ROLE = """
 When requested to write code, pick Python.
 When requested to show chess position, always use the FEN notation.
@@ -12,6 +5,13 @@ When showing HTML, always include what is in the body tag,
 but exclude the code surrounding the actual content. 
 So exclude always BODY, HEAD and HTML .
 """
+
+#--web true
+#--param OPENAI_API_KEY $OPENAI_API_KEY
+#--param OPENAI_API_HOST $OPENAI_API_HOST
+
+from openai import AzureOpenAI
+import re
 
 MODEL = "gpt-35-turbo"
 AI = None

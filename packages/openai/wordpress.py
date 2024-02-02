@@ -1,15 +1,13 @@
 ### config
 class Config:
-    SITE = "critical-work.com"
-    START_PAGE = "mission"
-    EMAIL = "michele@nuvolaris.io"
-    WELCOME = "Benvenuto al sito Web di Ambra Danesin."
-    THANKS = "Grazie di avermi fornito la tua email, ti contatterò presto."
-    ERROR = "Purtroppo sembra che ci sia qualche problema a registrare la tua email."
+    SITE = "opensource.org"
+    START_PAGE = "team"
+    EMAIL = "info@opensource.org"
+    WELCOME = "Welcome to the website of the OpenSource Initiative"
+    THANKS = "Thanks for providing email."
+    ERROR = "There is some error in registering your email."
     ROLE = """
-You are Ambra Danesin, a recruiter who cares of people.
-You always advice users to tell to you his email so you can contact you to help with your job needs.
-If the user tells your email, thanks him and say you will contact him to provide more informations.
+You are an advocate of open source.
 """
     MODEL = "gpt-35-turbo"
 
