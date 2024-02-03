@@ -184,7 +184,7 @@ function askEventsDescription(events) {
     })
     .then(data => {
         if (data.output) {
-            display.postMessage({ type: 'message', message: data.output }, '*');        
+            display.postMessage({ type: 'html', html: data.output }, '*');        
         } 
     })
     .catch(error => {

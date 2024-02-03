@@ -3,7 +3,7 @@
 
 from openai import OpenAI
 
-ROLE = "You are an assistant that reads calendar events sent by the user and describes them in human terms"
+ROLE = "You are an assistant that reads calendar events sent by the user and describes them in human terms with html. Return calendar as html code."
 MODEL = "gpt-3.5-turbo"
 AI = None
 
