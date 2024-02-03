@@ -163,7 +163,6 @@ function getEvents(token) {
       throw error;
     });
 }
-
 function askEventsDescription(events) {
   let base = location.href.replace(/index\.html$/, "");
 
@@ -190,13 +189,39 @@ function askEventsDescription(events) {
       }
     })
     .catch((error) => {
-      display.postMessage(
-        {
-          type: "message",
-          message: '<div id="error">Error loading description</div>',
-        },
-        "*"
-      );
+      display.postMessage({
+        type: "message",
+        message: '<div id="error">Error loading description</div>',
+      });
+      console.error(error);
+      alert("ERROR: cannot load description");
+    });
+
+  fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      input: events,
+    }),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response.json();
+    })
+    .then((data) => {
+      if (data.output) {
+        display.postMessage({ type: "html", html: data.output }, "*");
+      }
+    })
+    .catch((error) => {
+      display.postMessage({
+        type: "message",
+        message: '<div id="error">Error loading description</div>',
+      });
       console.error(error);
       alert("ERROR: cannot load description");
     });
