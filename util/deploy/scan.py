@@ -17,7 +17,7 @@ def scan():
         deployments.add("/".join(sp))
         packages.add(sp[1])
         
-    mains = glob("packages/*/*/main.js") + glob("packages/*/*/__main__.py")
+    mains = glob("packages/*/*/index.js") + glob("packages/*/*/__main__.py")
     # main = mains[2]
     for main in mains: 
         print(">", main)

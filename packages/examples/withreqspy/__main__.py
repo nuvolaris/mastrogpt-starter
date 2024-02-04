@@ -1,10 +1,11 @@
 #--web true
 #--kind python:default
 
-import htmlgenerator as hg
+from markdown import markdown
 
 def main(args):
-    page = hg.HTML(hg.HEAD(), hg.BODY(hg.H1("Hello, world")))
+    text = "# Welcome\n\nHello, *world*."
+
     return {
-        "body": hg.render(page, {})
+        "body": markdown(text)
     } 

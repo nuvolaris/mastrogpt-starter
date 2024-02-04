@@ -34,12 +34,13 @@ from pathlib import Path
 text = Path("util/test/chess.txt").read_text()
 text = Path("util/test/html.txt").read_text()
 text = Path("util/test/code.txt").read_text()
+import chess
 """
 def extract(text):
     res = {}
 
     # search for a chess position
-    pattern = r'(([rnbqkpRNBQKP1-8]{1,8}/){7}[rnbqkpRNBQKP1-8]{1,8} [bw] (-|K?Q?k?q?) (-|[a-h][36]) \d+ \d+)'
+    pattern = r'([rnbqkpRNBQKP1-8]{1,8}/){7}[rnbqkpRNBQKP1-8]{1,8}'
     m = re.findall(pattern, text, re.DOTALL | re.IGNORECASE)
     #print(m)
     if len(m) > 0:

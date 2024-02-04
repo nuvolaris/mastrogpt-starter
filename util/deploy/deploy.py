@@ -1,5 +1,5 @@
 import os
-from  os.path import exists
+from  os.path import exists, isdir
 from subprocess import Popen
 
 dry_run = False
@@ -17,6 +17,7 @@ def exec(cmd):
 def extract_args(files):
     res = []
     for file in files:
+        print(f": inspecting {file}")
         if exists(file):
             with open(file, "r") as f:
                 for line in f.readlines():
@@ -39,7 +40,7 @@ def deploy_package(package):
     global package_done
     # package args
     ppath = f"packages/{package}.args"
-    pargs = " ".join(extract_args(ppath))
+    pargs = " ".join(extract_args([ppath]))
     cmd = f"nuv package update {package} {pargs}"
     if not cmd in package_done:
         exec(cmd)
@@ -58,19 +59,20 @@ def build_action(sp):
     return res
 
 def deploy_action(sp):
+    
+    artifact = "/".join(sp)
     [name, typ] = sp[-1].rsplit(".", 1)
     package = sp[1]
-    artifact = "/".join(sp)
 
     deploy_package(package)
 
     if typ == "zip":
-        base = "/".join(sp)[:-4]
-        src = [f"{base}/__main__.py", f"{base}/main.js"]
+        base = artifact[:-4]
+        to_inspect = [f"{base}/__main__.py", f"{base}/index.js"]
     else:
-        src = [artifact]
+        to_inspect = [artifact]
     
-    args = " ".join(extract_args(src))
+    args = " ".join(extract_args(to_inspect))
     exec(f"nuv action update {package}/{name} {artifact} {args}")
 
 
@@ -82,25 +84,13 @@ file = "packages/deploy/multi/requirements.txt"
 """
 def deploy(file):
     print(f"*** {file}")
+    if isdir(file):
+        for start in ['__main__.py', 'index.js']:
+            sub = f"{file}/{start}"
+            if exists(sub):
+                file = sub
+                break
     sp = file.split("/")
-    
-    # no web incremental upload for now
-    #if sp[0] == "web":
-    #    deploy_web(sp[0], sp[1:])
-    #elif len(sp) > 3 and sp[2] == "web":
-    #    deploy_web(sp[0:3], sp[3:])
-    #elif len(sp) == 2:
-    #    deploy_action(sp, "default", sp[1])
-    
-    # packages/action/file.ext
-
-    if len(sp) == 3:
-        deploy_action(sp)
-    elif len(sp) > 3: 
-        #package/action/file/requrements.txt
-        if sp[-1] == "requirements.txt":
-            sp = build_venv(sp)
-        #package/action/file/__main__.py
-        else:
-            sp = build_action(sp)
-        deploy_action(sp)
+    if len(sp) > 3:
+        sp = build_action(sp)
+    deploy_action(sp)

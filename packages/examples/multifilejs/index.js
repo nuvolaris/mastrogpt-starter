@@ -8,3 +8,5 @@ function main(args) {
         body: hello()
     }
 }
+
+module.exports = main

@@ -1,11 +1,15 @@
 {
-  "main": "./main.js",
+  "name": "withreqsjs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
   "dependencies": {
-    "html-creator": "^0.7.2"
+    "marked": "^12.0.0"
   }
 }
- 
- 
- 
- 
- 

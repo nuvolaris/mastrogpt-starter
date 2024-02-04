@@ -47,13 +47,12 @@ tasks:
         -   |
             if test -e "packages/{{.A}}/package.json"
             then echo "*** building nodejs deployment"
-                 task build:node A="{{.A}}"
+                task build:node A="{{.A}}"
             fi
             if test -e "packages/{{.A}}/requirements.txt"
             then echo "*** building python deployment" 
-                 task build:venv A="{{.A}}"
+                task build:venv A="{{.A}}"
             fi
-
 
     build:action:
         aliases: [b]
@@ -63,7 +62,7 @@ tasks:
         -   |
             FILE=$(basename "{{.A}}")
             cd packages/{{.A}}
-            zip ../$FILE.zip  * -x requirements.txt -x package.json
+            zip ../$FILE.zip  * -x requirements.txt
         sources:
         - packages/{{.A}}/*
         generates:
@@ -97,6 +96,13 @@ tasks:
         cmds:
         - bash util/http-serve.sh 
         - echo "Terminated or another server started..."
+
+
+    single:
+        desc: deploy a single action (either a file or a directory)
+        requires: {vars: [A]}
+        cmds:
+        - python -m util.deploy -s "{{.A}}"
         
     deploy:
         desc: deploy actions
@@ -120,9 +126,10 @@ tasks:
         cmds:
         - task: undeploy
         - python -m util.deploy -w {{.FLAGS}}
+
         
     config:
-        desc: configure Nuvolaris MastroGPT
+        desc: configure MastroGPT to access nuvolaris.dev
         silent: true
         cmds:
         -   |

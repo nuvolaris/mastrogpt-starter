@@ -1,4 +1,15 @@
-Initial position in chess:
 
-rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
+text = """
+Here's a chess position in Forsyth-Edwards Notation (FEN) representing a checkmate:
+
+bash
+Copy code
+r3kbnr/pp1q1ppp/8/8/3R4/8/PPP2PPP/R5K1 w - - 0 1
+In this FEN string:
+
+r represents a black rook (R), q represents a black queen (Q), k represents a black king (K), and p represents black pawns (P).
+R represents a white rook, P represents white pawns, and K represents the white king.
+The / separates the ranks on the board.
+The spaces represent empty
+"""
 
