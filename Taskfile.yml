@@ -25,6 +25,20 @@ tasks:
         generates:
         - "packages/{{.A}}.zip"
 
+
+    build:node:
+        requires: { vars: [A] }
+        cmds:
+        -   >
+            bash util/build-node.sh 
+            $(pwd)/packages/{{.A}}/package.json
+            $(pwd)/packages/{{.A}}.zip
+        - task: build:action
+        sources:
+        - "packages/{{.A}}/packages.json"
+        generates:
+        - "packages/{{.A}}.zip"
+
     build:action:
         aliases: [b]
         requires: { vars: [A] }

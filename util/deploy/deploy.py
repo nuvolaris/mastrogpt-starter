@@ -21,6 +21,8 @@ def extract_args(file):
             for line in f.readlines():
                 if line.startswith("#-"):
                     res.append(line.strip()[1:])
+                if line.startswith("//-"):
+                    res.append(line.strip()[2:])
     return res
 
 # root _dir and _file (split)
@@ -42,11 +44,18 @@ def deploy_package(package):
         exec(cmd)
         package_done.add(cmd)
 
-def build_venv(sp):
-    exec(f"task build:venv A={sp[1]}/{sp[2]}")
+def _build(sp, what):
+    exec(f"task build:{what} A={sp[1]}/{sp[2]}")
     res = sp[:-1]
     res[-1] += ".zip"
     return res
+
+def build_venv(sp):
+    return _build(sp, "venv")
+
+def build_node(sp):
+    return _build(sp, "node")
+
 
 def build_action(sp):
     exec(f"task build:action A={sp[1]}/{sp[2]}")
