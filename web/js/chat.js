@@ -1,7 +1,6 @@
 // Globals
 let invoker = undefined
 
-// Constants
 const BOT_IMG = "/img/robot-mini.png";
 const PERSON_IMG = "/img/human-mini.png";
 const BOT_NAME = "BOT";
@@ -125,5 +124,9 @@ window.addEventListener('message', async function (ev) {
   invoker = new Invoker(ev.data.name, ev.data.url)
   titleChat.textContent = ev.data.name
   areaChat.innerHTML = ""
-  bot(await invoker.invoke(""))
+  if(ev.data.calendarEvent) {
+    bot(await invoker.invoke(ev.data.calendarEvent))
+  } else {
+    bot(await invoker.invoke(""))
+  }
 })

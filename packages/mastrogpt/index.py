@@ -14,6 +14,7 @@ def main(_):
                 "url": "openai/chat"
             },
             {
+<<<<<<< HEAD
                 "name": "Wordpress",
                 "url": "openai/wordpress"
             },
@@ -24,6 +25,10 @@ def main(_):
             {
                 "name": "Calendar",
                 "url": "google/chat"
+=======
+                "name": "Calendar",
+                "url": "openai/chat"
+>>>>>>> 8323a69 (refactor: messages calendar reading and html output)
             }
         ]
     }

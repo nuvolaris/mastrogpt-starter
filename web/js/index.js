@@ -1,6 +1,9 @@
 // global variables
 let chat = document.getElementById("chat").contentWindow;
 let display = document.getElementById("display").contentWindow;
+let token;
+let calendarEvents;
+let htmlEvents;
 
 //TODO dot env
 const config = {
@@ -8,12 +11,6 @@ const config = {
     "50639526067-dma0d7nqjeof22hboq3cv5j5e8kc0g75.apps.googleusercontent.com",
   redirectUri: "https://zany-dollop-59x95qxx4q7cqgj-8080.app.github.dev/",
 };
-
-document
-  .getElementById("google-auth-button")
-  .addEventListener("click", function () {
-    window.location.href = `https://accounts.google.com/o/oauth2/auth?client_id=${config.clientId}&redirect_uri=${config.redirectUri}&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcalendar&response_type=code`;
-  });
 
 function getUrlParameter(name) {
   name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
@@ -23,7 +20,6 @@ function getUrlParameter(name) {
     ? ""
     : decodeURIComponent(results[1].replace(/\+/g, " "));
 }
-
 document.addEventListener("DOMContentLoaded", async function () {
   try {
     const code = getUrlParameter("code");
@@ -31,13 +27,11 @@ document.addEventListener("DOMContentLoaded", async function () {
     const base = location.href.replace(/index\.html$/, "");
 
     if (code) {
-      console.log("Calling display to post message");
       await displayLoader();
-      console.log("Display OK, starting Google Flow");
-      startGoogleFlow(code);
+      await startGoogleFlow(code);
     }
+
     const data = await fetchIndex(base + "api/my/mastrogpt/index");
-    console.log(data);
 
     const insert = document.getElementById("top-area");
     data.services.forEach((service) => {
@@ -51,7 +45,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   }
 });
 
-function displayLoader() {
+async function displayLoader() {
   return new Promise((resolve) => {
     setTimeout(() => {
       display.postMessage(
@@ -71,10 +65,36 @@ async function fetchIndex(url) {
 function createServiceButton(base, service) {
   const button = document.createElement("button");
   button.textContent = service.name;
-  button.onclick = function () {
-    const url = base + "api/my/" + service.url;
-    chat.postMessage({ name: service.name, url: url });
-  };
+
+  if (service.name === "Calendar") {
+    button.id = "google-auth-button";
+    button.onclick = function () {
+      if (token && calendarEvents) {
+        const combinedMessage = JSON.stringify({
+          events: calendarEvents,
+        });
+        let base = location.href.replace(/index\.html$/, "");
+        const url = base + "api/my/google/human_events";
+        chat.postMessage({
+          name: "Calendar",
+          url: url,
+          calendarEvent: combinedMessage,
+        });
+        display.postMessage({ type: "html", html: htmlEvents }, "*");
+      } else {
+        const url = `https://accounts.google.com/o/oauth2/auth?client_id=${config.clientId}&redirect_uri=${config.redirectUri}&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcalendar&response_type=code`;
+        window.location.href = url;
+      }
+    };
+  } else {
+    button.onclick = function () {
+      let base = location.href.replace(/index\.html$/, "");
+
+      const url = base + "api/my/openai/chat";
+
+      chat.postMessage({ name: service.name, url: url });
+    };
+  }
   const span = document.createElement("span");
   span.appendChild(button);
   return span;
@@ -87,8 +107,7 @@ function removeParameters(parametersToRemove) {
   });
   history.replaceState({}, document.title, newUrl);
 }
-
-function startGoogleFlow(code) {
+async function startGoogleFlow(code) {
   const params = {
     code: code,
   };
@@ -98,29 +117,23 @@ function startGoogleFlow(code) {
   const urlWithParams = new URL(base + "api/my/google/token");
   urlWithParams.search = new URLSearchParams(params).toString();
 
-  fetch(urlWithParams)
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      return response.json();
-    })
-    .then((data) => {
-      getEvents(data.token)
-        .then((events) => {
-          askEventsDescription(events);
-        })
-        .catch((error) => {
-          console.error("Error retrieving events:", error);
-        });
-    })
-    .catch((e) => {
-      console.error(e);
-      alert("ERROR: cannot load token");
-    });
-}
+  try {
+    const response = await fetch(urlWithParams);
 
-function getEvents(token) {
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+
+    const data = await response.json();
+    token = data.token;
+    const events = await getEvents(data.token);
+    askEventsDescription(events);
+  } catch (e) {
+    console.error(e);
+    alert("ERROR: cannot load token");
+  }
+}
+async function getEvents(token) {
   const apiUrl =
     "https://www.googleapis.com/calendar/v3/calendars/primary/events";
 
@@ -142,31 +155,36 @@ function getEvents(token) {
 
   const url = `${apiUrl}?${params.toString()}`;
 
-  return fetch(url, { headers })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      return response.json();
-    })
-    .then((responseData) => {
-      const items = responseData.items.map((item) => ({
-        start: item.start.dateTime,
-        end: item.end.dateTime,
-        organizer: item.organizer.email,
-        summary: item.summary,
-      }));
-      return items;
-    })
-    .catch((error) => {
-      console.error("Error during the events call:", error);
-      throw error;
-    });
+  try {
+    const response = await fetch(url, { headers });
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+
+    const responseData = await response.json();
+
+    const items = responseData.items.map((item) => ({
+      start: item.start.dateTime,
+      end: item.end.dateTime,
+      organizer: item.organizer.email,
+      summary: item.summary,
+    }));
+
+    calendarEvents = items;
+    window.calendarEvents = calendarEvents;
+
+    return Promise.resolve(items); // Risolve la Promise con l'array di eventi
+  } catch (error) {
+    console.error("Error during the events call:", error);
+    return Promise.reject(error); // Rigetta la Promise con l'errore
+  }
 }
+
 function askEventsDescription(events) {
   let base = location.href.replace(/index\.html$/, "");
 
-  const url = base + "api/my/google/description";
+  const url = base + "api/my/google/html_events";
 
   fetch(url, {
     method: "POST",
@@ -174,54 +192,50 @@ function askEventsDescription(events) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      input: events,
+      events,
     }),
   })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      return response.json();
-    })
     .then((data) => {
       if (data.output) {
         display.postMessage({ type: "message", message: data.output }, "*");
       }
     })
-    .catch((error) => {
-      display.postMessage({
-        type: "message",
-        message: '<div id="error">Error loading description</div>',
-      });
-      console.error(error);
-      alert("ERROR: cannot load description");
-    });
+    .then((data) => {
+      try {
+        let base = location.href.replace(/index\.html$/, "");
 
-  fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      input: events,
-    }),
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
+        const url = base + "api/my/google/human_events";
+        const description = "describe these events in human terms";
+        const combinedMessage = JSON.stringify({
+          description: description,
+          events: events,
+        });
+        chat.postMessage({
+          name: "Calendar",
+          url: url,
+          calendarEvent: combinedMessage,
+        });
+      } catch (error) {
+        console.log("error on post message calendar", error);
       }
-      return response.json();
+
+      return data;
     })
     .then((data) => {
       if (data.output) {
+        htmlEvents = data.output;
         display.postMessage({ type: "html", html: data.output }, "*");
       }
+      return data;
     })
     .catch((error) => {
-      display.postMessage({
-        type: "message",
-        message: '<div id="error">Error loading description</div>',
-      });
+      display.postMessage(
+        {
+          type: "html",
+          html: '<div id="error">Error loading description</div>',
+        },
+        "*"
+      );
       console.error(error);
       alert("ERROR: cannot load description");
     });
