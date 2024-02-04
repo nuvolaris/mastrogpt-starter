@@ -69,15 +69,17 @@ function createServiceButton(base, service) {
     if (service.name === "Calendar") {
         button.id = "google-auth-button";
         button.onclick = function () {
-            if(token && calendarEvents) {
-                const combinedMessage = JSON.stringify({
-                    events: calendarEvents
-                });
+            if(token)
+            getEvents(token)
+            .then((events) => {
+                calendarEvents = events;
                 let base = location.href.replace(/index\.html$/, "");
                 const url = base + "api/my/google/human_events";
-                chat.postMessage({ name: 'Calendar', url: url, calendarEvent: combinedMessage }); 
-                display.postMessage({ type: 'html', html: htmlEvents }, '*');
-            }
+                askEventsDescription(events);
+            })
+            .catch((error) => {
+                console.error('Si è verificato un errore durante il recupero degli eventi:', error);
+            });
             
             else {
                 const url = `https://accounts.google.com/o/oauth2/auth?client_id=${config.clientId}&redirect_uri=${config.redirectUri}&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcalendar&response_type=code`;
