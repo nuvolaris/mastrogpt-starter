@@ -173,10 +173,10 @@ async function getEvents(token) {
         calendarEvents = items;
         window.calendarEvents = calendarEvents;
         
-        return Promise.resolve(items);  // Risolve la Promise con l'array di eventi
+        return Promise.resolve(items);  
     } catch (error) {
         console.error('Error during the events call:', error);
-        return Promise.reject(error);   // Rigetta la Promise con l'errore
+        return Promise.reject(error);
     }
 }
 
