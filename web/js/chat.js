@@ -1,5 +1,6 @@
 // Globals
 let invoker = undefined
+let calendarEvent;
 
 const BOT_IMG = "/img/robot-mini.png";
 const PERSON_IMG = "/img/human-mini.png";
@@ -32,8 +33,18 @@ class Invoker {
     if (this.url == null)
       return "Welcome, please select the chat application you want to use by clicking a  button on top.";
     // prepare a request
-    let json = {
-      input: msg
+    let json;
+    if(this.url.includes('/google/human_events')) {
+      json = {
+        input: `This is the message from the user: ${msg}. 
+        And these are calendar events: ${calendarEvent}. 
+        Answer to the user with calendar info only if he/she asks for it.`
+      };
+    } 
+    else {
+      json = {
+        input: msg
+      }
     }
     if (this.state != null) {
       json['state'] = this.state
@@ -125,8 +136,10 @@ window.addEventListener('message', async function (ev) {
   titleChat.textContent = ev.data.name
   areaChat.innerHTML = ""
   if(ev.data.calendarEvent) {
+    calendarEvent = ev.data.calendarEvent;
     bot(await invoker.invoke(ev.data.calendarEvent))
-  } else {
+  } 
+  else {
     bot(await invoker.invoke(""))
   }
 })
