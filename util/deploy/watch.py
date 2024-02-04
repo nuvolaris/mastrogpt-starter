@@ -1,4 +1,4 @@
-ALLOWED = set(["py", "txt", "args"])
+ALLOWED = set(["py", "js", "txt", "json" ])
 import os, time
 from subprocess import Popen
 from watchdog.observers import Observer

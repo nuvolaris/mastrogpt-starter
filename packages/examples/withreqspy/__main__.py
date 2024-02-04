@@ -7,4 +7,4 @@ def main(args):
     page = hg.HTML(hg.HEAD(), hg.BODY(hg.H1("Hello, world")))
     return {
         "body": hg.render(page, {})
-    }
+    } 

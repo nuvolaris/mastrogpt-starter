@@ -7,27 +7,16 @@ def scan():
     packages = set()
 
     print(">>> Scan:")
-    reqspy =  glob("packages/*/*/requirements.txt")
+    reqs =  glob("packages/*/*/requirements.txt") + glob("packages/*/*/package.json")
     # req = reqs[0]
     # from util.deploy.deploy import *
-    for req in reqspy:
+    for req in reqs:
         print(">", req)
         sp = req.split("/")
-        sp = build_venv(sp)
+        sp = build_zip(sp)
         deployments.add("/".join(sp))
         packages.add(sp[1])
         
-    reqsjs =  glob("packages/*/*/package.json")
-    # req = reqs[0]
-    # from util.deploy.deploy import *
-    for req in reqsjs:
-        print(">", req)
-        sp = req.split("/")
-        sp = build_node(sp)
-        deployments.add("/".join(sp))
-        packages.add(sp[1])     
-
-    
     mains = glob("packages/*/*/main.js") + glob("packages/*/*/__main__.py")
     # main = mains[2]
     for main in mains: 

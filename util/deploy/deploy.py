@@ -14,15 +14,16 @@ def exec(cmd):
     if not dry_run:
         Popen(cmd, shell=True, env=os.environ).wait()
 
-def extract_args(file):
+def extract_args(files):
     res = []
-    if exists(file):
-        with open(file, "r") as f:
-            for line in f.readlines():
-                if line.startswith("#-"):
-                    res.append(line.strip()[1:])
-                if line.startswith("//-"):
-                    res.append(line.strip()[2:])
+    for file in files:
+        if exists(file):
+            with open(file, "r") as f:
+                for line in f.readlines():
+                    if line.startswith("#-"):
+                        res.append(line.strip()[1:])
+                    if line.startswith("//-"):
+                        res.append(line.strip()[2:])
     return res
 
 # root _dir and _file (split)
@@ -44,18 +45,11 @@ def deploy_package(package):
         exec(cmd)
         package_done.add(cmd)
 
-def _build(sp, what):
-    exec(f"task build:{what} A={sp[1]}/{sp[2]}")
+def build_zip(sp):
+    exec(f"task build:zip A={sp[1]}/{sp[2]}")
     res = sp[:-1]
     res[-1] += ".zip"
     return res
-
-def build_venv(sp):
-    return _build(sp, "venv")
-
-def build_node(sp):
-    return _build(sp, "node")
-
 
 def build_action(sp):
     exec(f"task build:action A={sp[1]}/{sp[2]}")
@@ -71,9 +65,10 @@ def deploy_action(sp):
     deploy_package(package)
 
     if typ == "zip":
-        src = "/".join(sp)[:-4]+"/__main__.py"
+        base = "/".join(sp)[:-4]
+        src = [f"{base}/__main__.py", f"{base}/main.js"]
     else:
-        src = "/".join(sp)
+        src = [artifact]
     
     args = " ".join(extract_args(src))
     exec(f"nuv action update {package}/{name} {artifact} {args}")

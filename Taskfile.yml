@@ -35,18 +35,35 @@ tasks:
             $(pwd)/packages/{{.A}}.zip
         - task: build:action
         sources:
-        - "packages/{{.A}}/packages.json"
+        - "packages/{{.A}}/package.json"
         generates:
         - "packages/{{.A}}.zip"
+
+
+
+    build:zip:
+        requires: { vars: [A] }
+        cmds:
+        -   |
+            if test -e "packages/{{.A}}/package.json"
+            then echo "*** building nodejs deployment"
+                 task build:node A="{{.A}}"
+            fi
+            if test -e "packages/{{.A}}/requirements.txt"
+            then echo "*** building python deployment" 
+                 task build:venv A="{{.A}}"
+            fi
+
 
     build:action:
         aliases: [b]
         requires: { vars: [A] }
         cmds:
+        - task: build:zip
         -   |
             FILE=$(basename "{{.A}}")
             cd packages/{{.A}}
-            zip ../$FILE.zip  * -x requirements.txt
+            zip ../$FILE.zip  * -x requirements.txt -x package.json
         sources:
         - packages/{{.A}}/*
         generates:
