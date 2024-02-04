@@ -3,13 +3,17 @@ import json, requests
 
 def main(args):
 
-    NOTE = """There is no AI in this chat. Plese select one of:
+    NOTE = """There is no AI in this chat. 
+It only demonstrated what the chat can disply.
+Plese select one of:
 
     - code
     - message
     - html
     - upload
     - chess
+    
+Exact word, please.
 """
 
 

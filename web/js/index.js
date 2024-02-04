@@ -24,6 +24,8 @@ document.addEventListener("DOMContentLoaded", function() {
             insert.appendChild(p);
             console.log("enabled "+service.name)
         });
+        document.querySelector("button").click()
+
     })
     .catch( (e) => { console.log(e); alert("ERROR: cannot load index") } )
 })

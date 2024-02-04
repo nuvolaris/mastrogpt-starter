@@ -4,9 +4,9 @@ import json
 def main(_):
     data = {
         "services": [
-            { 
-                "name": "Demo", 
-                "url": "mastrogpt/demo",
+            {
+                "name": "Ambra",
+                "url": "openai/ambra"
             },
             {
                 "name": "OpenAI",
@@ -16,6 +16,10 @@ def main(_):
                 "name": "Wordpress",
                 "url": "openai/wordpress"
             },
+            { 
+                "name": "Demo", 
+                "url": "mastrogpt/demo",
+            } 
         ]
     }
     return {"body": data}
