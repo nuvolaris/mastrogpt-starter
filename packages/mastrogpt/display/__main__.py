@@ -25,6 +25,7 @@ def board(args):
     
 def main(args):
     out = ""
+    
     if "html" in args:
         out = render("html.html", args)
 
