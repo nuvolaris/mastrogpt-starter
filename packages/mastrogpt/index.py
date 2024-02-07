@@ -8,6 +8,10 @@ def main(arg):
                 "name": "Demo", 
                 "url": "mastrogpt/demo",
             },
+            { 
+                "name": "Kubernetes", 
+                "url": "openai_kubernetes/chat",
+            },
             {
                 "name": "OpenAI",
                 "url": "openai/chat"

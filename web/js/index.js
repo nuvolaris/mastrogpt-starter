@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", function() {
     fetch(base+"api/my/mastrogpt/index")
     .then( (x)  => x.json())
     .then( (data) => {
-        console.log(data)
+        // console.log(data)
         let insert = document.getElementById("top-area")
         data.services.forEach(service => {
             const button = document.createElement("button");
@@ -27,3 +27,27 @@ document.addEventListener("DOMContentLoaded", function() {
     })
     .catch( (e) => { console.log(e); alert("ERROR: cannot load index") } )
 })
+
+
+window.addEventListener('message', async function(ev) {
+    let data = ev.data
+    console.log("index.js: ricevuto un messaggio!")
+    console.log(data)
+    var chatframe = document.getElementById("chat")
+
+    if (data == "Show Nodes") {
+        // var chatframeDocument = chatframe.contentDocument || chatframe.contentWindow.document;
+
+        // var inputField = chatframeDocument.getElementById("msger-input-id");
+        // var form = chatframeDocument.getElementById("msger-inputarea-id")
+
+        // inputField.value = "Show Nodes";
+        
+        chatframe.contentWindow.postMessage("COMMAND: Show Nodes", "*")
+    } else if (data == "Show Pods") {
+
+        chatframe.contentWindow.postMessage("COMMAND: Show Pods", "*")
+
+    }
+
+  })

@@ -1,0 +1,93 @@
+Questo è un display:
+
+<style>
+    .circle {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        display: inline-block;
+        margin-right: 10px;
+        cursor: pointer;
+    }
+    .red {
+        background-color: red;
+    }
+    .green {
+        background-color: green;
+    }
+    .lightblue {
+        background-color: lightblue;
+    }
+</style>
+
+<div id="list-container"></div>
+<div id="info-container"></div>
+
+<script>
+    console.log("ciao come va?");
+
+    // Esempio di dati JSON
+    var jsonString = "{{openai-kubernetes-list}}";
+    var json_string = jsonString.replace(/'/g, '"');
+    var jsonData = JSON.parse(json_string);
+
+    // Funzione per creare la lista di pallini
+    function createList() {
+        console.log("Started create list!");
+        var listContainer = document.getElementById('list-container');
+        listContainer.innerHTML = '';
+
+        jsonData.forEach(function(item) {
+            var circle = document.createElement('div');
+            
+            circle.className = 'circle ' + (item.status == "Running" ? 'green' : (
+                                                item.status == "Succeeded" ? 'lightblue': 'red') );
+            
+            // Modifica qui per utilizzare .metadata.name invece di .id
+            circle.setAttribute('data-id', item.metadata.name);
+            
+            circle.addEventListener('click', showInfo);
+            listContainer.appendChild(circle);
+        });
+    }
+
+    // Funzione per visualizzare più informazioni al clic su un pallino
+    function showInfo(event) {
+        var id = event.target.getAttribute('data-id');
+        var selectedItem = jsonData.find(function(item) {
+            return item.metadata.name == id;
+        });
+
+        var infoContainer = document.getElementById('info-container');
+        infoContainer.innerHTML = '';
+
+        // Creazione di un elenco di informazioni
+        var infoList = document.createElement('ul');
+
+        function addPropertiesToInfoList(obj, parentKey) {
+            for (var key in obj) {
+                var listItem = document.createElement('li');
+                var currentKey = parentKey ? parentKey + '.' + key : key;
+                if (typeof obj[key] === 'object' && obj[key] !== null) {
+                    listItem.innerHTML = '<strong>' + currentKey + ':</strong>';
+                    var nestedList = document.createElement('ul');
+                    addPropertiesToInfoList(obj[key], currentKey);
+                    listItem.appendChild(nestedList);
+                } else {
+                    listItem.innerHTML = '<strong>' + currentKey + ':</strong> ' + obj[key];
+                }
+                infoList.appendChild(listItem);
+            }
+        }
+
+        addPropertiesToInfoList(selectedItem, '');
+
+        infoContainer.appendChild(infoList);
+    }
+
+    // Inizializza la lista di pallini al caricamento della pagina
+    createList();
+</script>
+
+
+

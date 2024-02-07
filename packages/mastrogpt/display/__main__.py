@@ -36,10 +36,14 @@ def main(args):
         out = render("editor.html", data)
     elif "chess" in args:
         out = board(args)
+        
     elif "message" in args:
         if not "title" in args:
             args["title"] = "Message"
         out = render("message.html", args)
+
+    elif "openai-kubernetes-list" in args:
+        out = render("oai_kb_list.html", args)
 
     code = 200 if out != "" else 204
     return {

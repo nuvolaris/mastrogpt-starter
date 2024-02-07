@@ -48,7 +48,7 @@ class Invoker {
       .then(r => r.json())
       .then(r => {
         // got answer from the backend
-        console.log(r)
+        // console.log(r)
         this.state = r.state
         let data = r
         let output = data.output
@@ -73,7 +73,7 @@ function formatDate(date) {
 
 function appendMessage(name, img, side, text) {
   //   Simple solution for small apps
-  console.log(text)
+  // console.log(text)
   let html = marked.parse(text)
   const msgHTML = `
     <div class="msg ${side}-msg">
@@ -107,6 +107,8 @@ function human(msg) {
 msgerForm.addEventListener("submit", event => {
   event.preventDefault();
 
+  console.log("ciao")
+
   const input = msgerInput.value;
   if (!input) return;
 
@@ -119,11 +121,19 @@ msgerForm.addEventListener("submit", event => {
   }
 });
 
-
 window.addEventListener('message', async function (ev) {
   console.log(ev);
-  invoker = new Invoker(ev.data.name, ev.data.url)
-  titleChat.textContent = ev.data.name
-  areaChat.innerHTML = ""
-  bot(await invoker.invoke(""))
+  let data = ev.data
+  if (typeof data === 'string' || data instanceof String) {
+    if(data.startsWith("COMMAND:")) {
+      human("Comando: " + data.split("COMMAND: ").pop())
+      invoker.invoke(data).then(reply => bot(reply))
+    } 
+  } else {
+    invoker = new Invoker(ev.data.name, ev.data.url)
+    titleChat.textContent = ev.data.name
+    areaChat.innerHTML = ""
+    bot(await invoker.invoke(""))
+  }
+
 })

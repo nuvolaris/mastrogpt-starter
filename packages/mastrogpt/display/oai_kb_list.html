@@ -1,0 +1,125 @@
+<style>
+    /* Stili per i bottoni */
+    .button-row {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .button-row button {
+            margin: 0 10px;
+            padding: 5px 10px;
+        }
+
+    .status-circle {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        display: inline-block;
+        margin-right: 5px;
+    }
+    .red {
+        background-color: red;
+    }
+    .green {
+        background-color: green;
+    }
+    .lightblue {
+        background-color: lightblue;
+    }
+    th {
+        position: sticky;
+        top: 0;
+        background-color: white; /* Assicura che l'intestazione sia visibile sopra i dati */
+        z-index: 1; /* Assicura che l'intestazione sia posizionata sopra il contenuto */
+    }
+</style>
+</head>
+<body>
+    <div class="button-row">
+        <button id="nodes-button" onclick="window.parent.postMessage('Show Nodes', window.location.origin)">Nodes</button>
+        <button id="pods-button" onclick="window.parent.postMessage('Show Pods', window.location.origin)">Pods</button>
+    </div>
+<table>
+    <thead>
+        <tr>
+            <th>Nome</th>
+            <th>Stato</th>
+            <th>Dettagli</th>
+        </tr>
+    </thead>
+    <tbody id="table-body">
+    </tbody>
+</table>
+<div id="info-container"></div>
+
+<script>
+    // Esempio di dati JSON
+    var jsonString = "{{openai-kubernetes-list}}";
+    var json_string = jsonString.replace(/'/g, '"');
+    var jsonData = JSON.parse(json_string);
+
+    // Funzione per creare la lista di pallini
+    function createList() {
+        var tableBody = document.getElementById('table-body');
+        tableBody.innerHTML = '';
+
+        jsonData.forEach(function(item) {
+            var row = document.createElement('tr');
+
+            var nameCell = document.createElement('td');
+            nameCell.textContent = item.metadata.name;
+            row.appendChild(nameCell);
+
+            var statusCell = document.createElement('td');
+            statusCell.textContent = item.status;
+            var statusCircle = document.createElement('span');
+            statusCircle.className = 'status-circle ' + (item.status == "Running" ? 'green' : (
+                                            item.status == "Succeeded" ? 'lightblue': 'red') );
+            statusCell.insertBefore(statusCircle, statusCell.firstChild);
+            row.appendChild(statusCell);
+
+            var detailsCell = document.createElement('td');
+            var button = document.createElement('button');
+            button.textContent = 'Dettagli';
+            button.addEventListener('click', function() {
+                showInfo(item);
+            });
+            detailsCell.appendChild(button);
+            row.appendChild(detailsCell);
+
+            tableBody.appendChild(row);
+        });
+    }
+
+    // Funzione per visualizzare più informazioni al clic su un pallino
+    function showInfo(item) {
+        var infoWindow = window.open('', 'Dettagli', 'width=400,height=300');
+        var infoContainer = infoWindow.document.body;
+        infoContainer.innerHTML = '';
+
+        // Creazione di un elenco di informazioni
+        var infoList = document.createElement('ul');
+
+        function addPropertiesToInfoList(obj, parentKey) {
+            for (var key in obj) {
+                var listItem = document.createElement('li');
+                var currentKey = parentKey ? parentKey + '.' + key : key;
+                if (typeof obj[key] === 'object' && obj[key] !== null) {
+                    listItem.innerHTML = '<strong>' + currentKey + ':</strong>';
+                    var nestedList = document.createElement('ul');
+                    addPropertiesToInfoList(obj[key], currentKey);
+                    listItem.appendChild(nestedList);
+                } else {
+                    listItem.innerHTML = '<strong>' + currentKey + ':</strong> ' + obj[key];
+                }
+                infoList.appendChild(listItem);
+            }
+        }
+
+        addPropertiesToInfoList(item, '');
+
+        infoContainer.appendChild(infoList);
+    }
+
+    // Inizializza la lista di elementi al caricamento della pagina
+    createList();
+</script>
