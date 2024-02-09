@@ -1,6 +1,5 @@
-# --web true
+#--web true
 import json
-
 
 def main(_):
     data = {
@@ -14,22 +13,17 @@ def main(_):
                 "url": "openai/chat"
             },
             {
-<<<<<<< HEAD
                 "name": "Wordpress",
                 "url": "openai/wordpress"
             },
-            {
-                "name": "Demo",
+            { 
+                "name": "Demo", 
                 "url": "mastrogpt/demo",
             },
-            {
-                "name": "Calendar",
-                "url": "google/chat"
-=======
-                "name": "Calendar",
-                "url": "openai/chat"
->>>>>>> 8323a69 (refactor: messages calendar reading and html output)
-            }
+            { 
+                "name": "Calendar", 
+                "url": "openai/chat",
+            }  
         ]
     }
     return {"body": data}

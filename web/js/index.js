@@ -12,13 +12,14 @@ const config = {
   redirectUri: "https://zany-dollop-59x95qxx4q7cqgj-8080.app.github.dev/",
 };
 
+
+
 function getUrlParameter(name) {
-  name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-  var regex = new RegExp("[\\?&]" + name + "=([^&#]*)");
+    
+  name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+  var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
   var results = regex.exec(location.search);
-  return results === null
-    ? ""
-    : decodeURIComponent(results[1].replace(/\+/g, " "));
+  return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
 }
 document.addEventListener("DOMContentLoaded", async function () {
   try {
@@ -93,6 +94,16 @@ function createServiceButton(base, service) {
 
     chat.postMessage({ name: service.name, url: url });
   }
+  else {
+    button.onclick = function () {
+        let base = location.href.replace(/index\.html$/, "");
+
+        const url = base + "api/my/openai/chat";
+
+        chat.postMessage({ name: service.name, url: url });
+    };
+  }    
+
 
   const span = document.createElement("span");
   span.appendChild(button);
@@ -182,7 +193,7 @@ async function getEvents(token) {
 
 function askEventsDescription(events) {
   let base = location.href.replace(/index\.html$/, "");
-
+  console.log('events are', events)
   const url = base + "api/my/google/html_events";
 
   fetch(url, {
@@ -194,12 +205,15 @@ function askEventsDescription(events) {
       events,
     }),
   })
-    .then((data) => {
+  .then((data) => {
+    return data.json(); 
+  })
+  .then((data) => {
       if (data.output) {
-        display.postMessage({ type: "message", message: data.output }, "*");
+        display.postMessage({ type: "html", html: data.output }, "*");
       }
-    })
-    .then((data) => {
+  })
+  .then((data) => {
       try {
         let base = location.href.replace(/index\.html$/, "");
 
@@ -219,15 +233,8 @@ function askEventsDescription(events) {
       }
 
       return data;
-    })
-    .then((data) => {
-      if (data.output) {
-        htmlEvents = data.output;
-        display.postMessage({ type: "html", html: data.output }, "*");
-      }
-      return data;
-    })
-    .catch((error) => {
+  })
+  .catch((error) => {
       display.postMessage(
         {
           type: "html",
@@ -237,5 +244,5 @@ function askEventsDescription(events) {
       );
       console.error(error);
       alert("ERROR: cannot load description");
-    });
+  });
 }
