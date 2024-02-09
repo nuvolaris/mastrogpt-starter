@@ -16,6 +16,10 @@ def main(arg):
                 "name": "OpenAI",
                 "url": "openai/chat"
             },
+            {
+                "name": "prova",
+                "url": "openai/assistant"
+            },
         ]
     }
     return {"body": data}

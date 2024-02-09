@@ -75,6 +75,8 @@ file = "packages/deploy/hello.py"
 file = "packages/deploy/multi.zip"
 file = "packages/deploy/multi/__main__.py"
 file = "packages/deploy/multi/requirements.txt"
+file = "packages/deploy/multi/requirements.txt"
+
 """
 def deploy(file):
     print(f"*** {file}")

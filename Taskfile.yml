@@ -31,7 +31,7 @@ tasks:
         -   |
             FILE=$(basename "{{.A}}")
             cd packages/{{.A}}
-            zip ../$FILE.zip  * -x requirements.txt
+            zip ../$FILE.zip  * -x requirements.txt 
         sources:
         - packages/{{.A}}/*
         generates:
@@ -47,10 +47,11 @@ tasks:
         cmds:
         -   |
             nuv -version
-            for i in packages/*/*/requirements.txt
-            do pip install -r $i
+            for i in packages/*/*/requirements.txt; do
+                pip install -r "$i"
             done
             task config
+
 
     cli: |
         ipython -i util/init.ipy

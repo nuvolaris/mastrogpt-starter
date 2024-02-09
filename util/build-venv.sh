@@ -11,7 +11,7 @@ cp "$REQS" "$DIR"/requirements.txt
 cd "$DIR"
 virtualenv virtualenv
 source virtualenv/bin/activate
-pip install -r  requirements.txt
+pip install -r  requirements.txt 
 virtualenv/bin/python -m pip uninstall -y -q setuptools wheel pip
 rm -f "$ZIP"
 zip -r "$ZIP" virtualenv >/dev/null

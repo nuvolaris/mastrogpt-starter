@@ -5,7 +5,6 @@
 
 from openai import AzureOpenAI
 import json
-import test
 
 data_to_display = ""
 last_context = ""
@@ -102,16 +101,14 @@ You will get a sentence from the user, you have to return a brief title (max 5 w
 
 SUBJECT_CHANGE_ROLE = """
 You will be given two texts. A context and a query. 
-If you think you can respond correctly to the query with the given context, return Yes.
- Otherwhise, return No.
+If you think you can respond correctly to the query with the given context, return Yes. Otherwhise, return No.
 Examples:
- (State of the all nodes, State of the first one) -> Yes
- (State of the all nodes, State of the pods) -> No
- (All the clusters, What about the nodes) -> No 
+(State of the all nodes, State of the first one) -> Yes
+(State of the all nodes, State of the pods) -> No
+(All the clusters, What about the nodes) -> No 
 """
 
 MODEL = "gpt-35-turbo"
-
 
 def req(msg):
     return [{"role": "system", "content": ROLE}, 
@@ -124,7 +121,6 @@ def title_maker(msg):
 def conversation_checker(msg):
     return [{"role": "system", "content": SUBJECT_CHANGE_ROLE}, 
             {"role": "user", "content": msg}]
-
 
 def ask_for_conversation_check(input):
     comp = AI.chat.completions.create(model=MODEL, messages=conversation_checker(input))
@@ -211,7 +207,7 @@ def main(args):
     if input.startswith("COMMAND"):
         #  we take the command
         command = input.split("COMMAND:")[1].strip()
-        print(f"Executing command: {command =}" )
+        # print(f"Executing command: {command =}" )
         if command == "Show Nodes":
             context = list_objects("nodes")
         elif command == "Show Pods":
@@ -241,6 +237,7 @@ def main(args):
         "title": "Risposta",
         "openai-kubernetes-list": data_to_display
     }
+    
     # res["state"] = content
     return {"body": res}
 
