@@ -19,7 +19,11 @@ def main(_):
             { 
                 "name": "Demo", 
                 "url": "mastrogpt/demo",
-            } 
+            },
+            { 
+                "name": "Calendar", 
+                "url": "openai/chat",
+            }  
         ]
     }
     return {"body": data}
