@@ -4,6 +4,7 @@ let display = document.getElementById("display").contentWindow;
 let token;
 let calendarEvents;
 let htmlEvents;
+let base = location.href.replace(/index\.html$/, "")
 
 //TODO dot env
 const config = {
@@ -95,13 +96,13 @@ function createServiceButton(base, service) {
     chat.postMessage({ name: service.name, url: url });
   }
   else {
-    button.onclick = function () {
-        let base = location.href.replace(/index\.html$/, "");
+    
 
-        const url = base + "api/my/openai/chat";
+    button.onclick = function() {
+      let url = base + "api/my/"+service.url
+      chat.postMessage({name: service.name, url: url})
+  };
 
-        chat.postMessage({ name: service.name, url: url });
-    };
   }    
 
 
