@@ -3,7 +3,6 @@
 #--timeout 300000
 #--memory 2048
 #--param OPENAI_API_KEY $OPENAI_API_KEY
-#--param AZURE_OPENAI_API_KEY $OPENAI_API_HOST
 #--param OPENAI_API_HOST $OPENAI_API_HOST
 
 #--param MONGODB_URL $MONGODB_URL
@@ -13,9 +12,9 @@ import time
 import math
 from chat import ask_openai
 
+from models import ConsistentContextChecker
+
 global azure_client, mongodb_client
-
-
 
 
 # Funzione per calcolare la distanza del coseno
@@ -52,19 +51,36 @@ def generate_embeddings(args):
 
     # Loading data
     from langchain_community.document_loaders import TextLoader, DirectoryLoader
-    loader = DirectoryLoader("docs/sdk1", glob="**/*.md", loader_cls=TextLoader)
+    loader = DirectoryLoader("docs/sdk2", glob="**/*.md", loader_cls=TextLoader)
     documents = loader.load()
     print(*[document.metadata for document in documents], sep="\n")
 
     # Splitting data
-    from langchain.text_splitter import RecursiveCharacterTextSplitter
-    text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=80)
-    splitted_documents = text_splitter.split_documents(documents)
-    chunks = [document.page_content for document in splitted_documents]
+    # from langchain.text_splitter import RecursiveCharacterTextSplitter
+    # text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=80)
+    # splitted_documents = text_splitter.split_documents(documents)
+    from langchain.text_splitter import MarkdownHeaderTextSplitter
+    headers_to_split_on = [
+        ("#", "Header 1"),
+        ("##", "Header 2"),
+    ]
+    markdown_splitter = MarkdownHeaderTextSplitter(
+        headers_to_split_on=headers_to_split_on, 
+        strip_headers=False
+    )
+
+    chunks = []
+    for document in documents:
+        md_header_splits = markdown_splitter.split_text(document.page_content)
+        chunks.extend( [
+            document.page_content for document in md_header_splits
+        ])
+
+    # chunks = [document.page_content for document in splitted_documents]
     print(f"I have to embed {len(chunks)} chunks")
     # Embedding data
     embeddings = []
-    stop, step = len(chunks), 16
+    stop, step = len(chunks), 7
     for i in range(0, stop, step):
         print(f"Started embedding chunks {i}-{i+step} of {stop}")
         chunks_slice = chunks[i : i + step]
@@ -79,7 +95,7 @@ def generate_embeddings(args):
             "embedding": embedding,
             "literal": chunks[id] if id < len(chunks) else ""
         }
-        db.caep_embeddings.insert_one(obj)
+        db.caep_embeddings_md.insert_one(obj)
     
     print("Saved all to MongoDB")
 
@@ -90,7 +106,7 @@ def load_embeddings(args, query):
     db = mongodb_client.spesce_ferretdb
 
     # Recupera gli oggetti da MongoDB
-    objs = list(db.caep_embeddings.find({}))
+    objs = list(db.caep_embeddings_md.find({}))
 
     # Esegui la query di ricerca per trovare l'embedding più simile
     embed_query = azure_client.embeddings.create(input=query, model="text-embedding-ada-002").data[0].embedding
@@ -118,23 +134,61 @@ def main(args):
         generate_embeddings(args)
         return {"body": {"output": "Saved embeddings to MongoDB"}}
     else:
+    
 
         input = args.get("input", "")
+    
         if input == "":
             res = {
                 "output": "Ciao. Chiedimi quello che ti interessa sapere sulla documentazione.",
                 "title": "CAEP DOCS Assistant Chat",
                 "message": "Welcome to CAEP DOCS assistant."
             }
-        else:
-            response = load_embeddings(args, input)
-            #     query = "Le annotation hanno tre proprietà"
 
-            import html
+        else:
+            last_response = args["state"]["last_response"]  if  (
+                "state" in args and "last_response" in args["state"] 
+            ) else None
+
+            ccc = ConsistentContextChecker(args["OPENAI_API_KEY"], args["OPENAI_API_HOST"])
+            is_consistent = ccc.is_consistent(input, last_response)
+
+            print(f"{input =}, {is_consistent = }, {last_response = }")
+            if last_response:
+                if is_consistent:
+                    most_similar_sentence = last_response
+                    completion = ask_openai(args, query=input, context=most_similar_sentence)
+                else:
+                    most_similar_sentence = load_embeddings(args, input)
+                    completion = ask_openai(args, query=f"""
+#######
+HISTORY = {last_response} 
+#######
+QUERY = {input}                                            
+""" , context=most_similar_sentence)
+
+            else:
+                most_similar_sentence = load_embeddings(args, input)
+                completion = ask_openai(args, query=input, context=most_similar_sentence)
+# 
             res = {
-                "output": ask_openai(args, query=input, context=response),
+                "output": completion,
                 "title": "CAEP DOCS Assistant Chat",
-                "mdshow": html.escape(response.replace("\n", '\\n'))
+                "mdshow": most_similar_sentence.replace('"', '\\"').replace("\n", '\\n'),
+                "state":  {
+                    "last_response": "Documentation: " + most_similar_sentence + "\nBrief: " + completion + "\nUser:" + input + "\n."
+                }
             }
 
         return {"body": res }
+
+
+
+# elif input == "DROPDB":
+        
+#         mongodb_client.drop_collection("caep_embeddings")
+#         res = {
+#             "output": "Done. Collection has been dropped.",
+#             "title": "CAEP DOCS Assistant Chat",
+#             "mdshow": "👍🏻"
+#         }
