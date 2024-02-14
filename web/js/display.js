@@ -13,17 +13,13 @@ window.addEventListener('message', async function(ev) {
             let content =  document.getElementById("_display_container_");
             content.innerHTML = t;
 
-            // Trova tutti gli elementi script nell'HTML appena inserito
-            const scriptElements = content.getElementsByTagName('script');
-
-            // Esegui ciascuno script
-            for (let i = 0; i < scriptElements.length; i++) {
-                console.log("Running script", i)
-                const script = scriptElements[i].innerText || scriptElements[i].textContent;
-                new Function(script)();
+            let scripts = content.getElementsByTagName("script");
+            for (let script of scripts) {
+                console.log(script.text);
+                eval(script.text);
             }
-
             
+
         }
     })
     .catch(e => {

@@ -28,6 +28,9 @@ def main(args):
 
     if "html" in args:
         out = render("html.html", args)
+    elif "mdshow" in args:
+        out = render("mdshow.html", args)
+        
     elif "code" in args:
         data = {
             "code": args['code'],

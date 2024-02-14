@@ -1,0 +1,16 @@
+<style>
+    #titolone {
+        position: sticky;
+        top: 0;
+        background-color: white; /* Assicura che l'intestazione sia visibile sopra i dati */
+        z-index: 1; /* Assicura che l'intestazione sia posizionata sopra il contenuto */
+        text-align: center;
+        border-bottom: 2px solid black;
+}
+</style>
+<div id="titolone"> <h1>Doc Page Here</h1> </div>
+<div id="__content"> {{{mdshow}}} </div>
+<script>
+let data = "{{{mdshow}}}";
+document.getElementById('__content').innerHTML = marked.parse(data) + marked.parse(data)  + marked.parse(data)  + marked.parse(data)  
+</script>

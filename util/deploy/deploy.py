@@ -48,8 +48,17 @@ def build_venv(sp):
     res[-1] += ".zip"
     return res
 
-def build_action(sp):
+def build_deploy_action(sp):
+    # called in hot reload
+    print("This is called in the deploy")
     exec(f"task build:action A={sp[1]}/{sp[2]}")
+    res = sp[:-1]
+    res[-1] += ".zip"
+    return res
+
+def build_action(sp):
+    # called in hot reload
+    exec(f"task buildreload:action A={sp[1]}/{sp[2]}")
     res = sp[:-1]
     res[-1] += ".zip"
     return res

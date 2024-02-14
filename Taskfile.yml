@@ -31,6 +31,19 @@ tasks:
         -   |
             FILE=$(basename "{{.A}}")
             cd packages/{{.A}}
+            zip ../$FILE.zip * -r  -x requirements.txt 
+        sources:
+        - packages/{{.A}}/*
+        generates:
+        - packages/{{.A}}.zip
+
+    buildreload:action:
+        aliases: [bR]
+        requires: { vars: [A] }
+        cmds:
+        -   |
+            FILE=$(basename "{{.A}}")
+            cd packages/{{.A}}
             zip ../$FILE.zip  * -x requirements.txt 
         sources:
         - packages/{{.A}}/*
