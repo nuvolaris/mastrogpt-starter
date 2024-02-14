@@ -1,6 +1,6 @@
 #--web true
 #--kind python:default
-#--param MISTRAL_API_KEY j78Rw9p5yjuyTIOjVTTjTMnj5wRMkW26
+#--param MISTRAL_API_KEY xxx
 
 
 from mistralai.client import MistralClient
