@@ -166,6 +166,9 @@ HISTORY = {last_response}
 #######
 QUERY = {input}                                            
 """ , context=most_similar_sentence)
+                    
+                    print(completion)
+                    print(most_similar_sentence)
 
             else:
                 most_similar_sentence = load_embeddings(args, input)
