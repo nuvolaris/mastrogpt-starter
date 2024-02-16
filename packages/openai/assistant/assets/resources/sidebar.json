@@ -1,0 +1,429 @@
+[
+  {
+    "id": "home",
+    "icon": "home",
+    "title": "Home",
+    "routerLink": [
+      "home"
+    ],
+    "hasIndex": true
+  },
+  {
+    "id": "buttons",
+    "icon": "buttons-indicators",
+    "title": "buttons",
+    "hasIndex": false,
+    "children": [
+      {
+        "id": "button",
+        "icon": "button",
+        "title": "button",
+        "routerLink": [
+          "buttons",
+          "button"
+        ],
+        "hasIndex": true
+      },
+      {
+        "id": "spinner",
+        "icon": "spinner",
+        "title": "Spinner",
+        "routerLink": [
+          "buttons",
+          "spinner"
+        ],
+        "hasIndex": true
+      },
+      {
+        "id": "toggle",
+        "icon": "toggle",
+        "title": "Toggle",
+        "routerLink": [
+          "buttons",
+          "toggle"
+        ],
+        "hasIndex": true
+      }
+    ]
+  },
+  {
+    "id": "form-controls",
+    "icon": "form-controls",
+    "title": "form-controls",
+    "hasIndex": false,
+    "children": [
+      {
+        "id": "input",
+        "icon": "input",
+        "title": "Input",
+        "routerLink": [
+          "form-controls",
+          "input"
+        ],
+        "hasIndex": true
+      },
+      {
+        "id": "textarea",
+        "icon": "textarea",
+        "title": "Textarea",
+        "routerLink": [
+          "form-controls",
+          "textarea"
+        ],
+        "hasIndex": true
+      },
+      {
+        "id": "caption",
+        "icon": "caption",
+        "title": "Caption",
+        "routerLink": [
+          "form-controls",
+          "caption"
+        ],
+        "hasIndex": true
+      },
+      {
+        "id": "checkbox",
+        "icon": "checkbox",
+        "title": "Checkbox Input",
+        "routerLink": [
+          "form-controls",
+          "checkbox"
+        ],
+        "hasIndex": true
+      },
+      {
+        "id": "combo",
+        "icon": "combo",
+        "title": "Combo Box",
+        "routerLink": [
+          "form-controls",
+          "combo"
+        ],
+        "hasIndex": true
+      },
+      {
+        "id": "date",
+        "icon": "date-input",
+        "title": "Date Input",
+        "routerLink": [
+          "form-controls",
+          "date"
+        ],
+        "hasIndex": true
+      },
+      {
+        "id": "time",
+        "icon": "navigation",
+        "title": "Time Input",
+        "routerLink": [
+          "form-controls",
+          "time"
+        ],
+        "hasIndex": true
+      },
+      {
+        "id": "datetime",
+        "icon": "date-input",
+        "title": "DateTime Input",
+        "routerLink": [
+          "form-controls",
+          "datetime"
+        ],
+        "hasIndex": true
+      },
+      {
+        "id": "select",
+        "icon": "select-input",
+        "title": "Select Input",
+        "routerLink": [
+          "form-controls",
+          "select"
+        ],
+        "hasIndex": true
+      },
+      {
+        "id": "multiselect",
+        "icon": "multiselect-input",
+        "title": "Multiselect Input",
+        "routerLink": [
+          "form-controls",
+          "multiselect"
+        ],
+        "hasIndex": true
+      },
+      {
+        "id": "radio",
+        "icon": "radio",
+        "title": "Radio Input",
+        "routerLink": [
+          "form-controls",
+          "radio"
+        ],
+        "hasIndex": true
+      }
+    ]
+  },
+  {
+    "id": "layout",
+    "icon": "layout",
+    "title": "Layout",
+    "hasIndex": false,
+    "children": [
+      {
+        "id": "card",
+        "icon": "card",
+        "title": "Card",
+        "routerLink": [
+          "layout",
+          "card"
+        ],
+        "hasIndex": true
+      },
+      {
+        "id": "master-page",
+        "icon": "master-page",
+        "title": "Master Page",
+        "routerLink": [
+          "layout",
+          "master-page"
+        ],
+        "hasIndex": true
+      },
+      {
+        "id": "colors-palette",
+        "icon": "colorpalette",
+        "title": "colors-palette",
+        "routerLink": [
+          "layout",
+          "colors"
+        ],
+        "hasIndex": true
+      },
+      {
+        "id": "icons",
+        "icon": "no-icon",
+        "title": "icons-palette",
+        "routerLink": [
+          "layout",
+          "icons"
+        ],
+        "hasIndex": true
+      },
+      {
+        "id": "css-variables",
+        "icon": "code-copied",
+        "title": "css-variables.title",
+        "routerLink": [
+          "layout",
+          "css-variables"
+        ],
+        "hasIndex": true
+      },
+      {
+        "id": "grid-system",
+        "icon": "grid",
+        "title": "Grid System",
+        "routerLink": [
+          "business",
+          "grid-system"
+        ],
+        "hasIndex": true
+      }
+    ]
+  },
+  {
+    "id": "navigation",
+    "icon": "navigation",
+    "title": "navigation",
+    "hasIndex": false,
+    "children": [
+      {
+        "id": "context-menu",
+        "icon": "context-menu",
+        "title": "Context Menu",
+        "routerLink": [
+          "navigation",
+          "context-menu"
+        ],
+        "hasIndex": true
+      },
+      {
+        "id": "modal",
+        "icon": "modal",
+        "title": "Modal",
+        "routerLink": [
+          "navigation",
+          "modal"
+        ],
+        "hasIndex": true
+      },
+      {
+        "id": "toast",
+        "icon": "toast",
+        "title": "Toast",
+        "routerLink": [
+          "navigation",
+          "toast"
+        ],
+        "hasIndex": true
+      },
+      {
+        "id": "user-popover",
+        "icon": "user-full",
+        "title": "User Popover",
+        "routerLink": [
+          "navigation",
+          "popover-user"
+        ],
+        "hasIndex": true
+      }
+    ]
+  },
+  {
+    "id": "sdk",
+    "icon": "utility",
+    "title": "SDK",
+    "hasIndex": false,
+    "children": [
+      {
+        "id": "architecture",
+        "icon": "architecture",
+        "title": "architecture",
+        "routerLink": [
+          "business",
+          "architecture"
+        ],
+        "hasIndex": true
+      },
+      {
+        "id": "authorization",
+        "icon": "user-full",
+        "title": "Authorization",
+        "routerLink": [
+          "business",
+          "authorization"
+        ],
+        "hasIndex": true
+      },
+      {
+        "id": "scarface",
+        "icon": "scarf-ace",
+        "title": "Scarface",
+        "routerLink": [
+          "business",
+          "scarface"
+        ],
+        "hasIndex": true
+      },
+      {
+        "id": "codegen",
+        "icon": "code-creator",
+        "title": "Codegen",
+        "routerLink": [
+          "business",
+          "codegen"
+        ],
+        "hasIndex": true
+      },
+      {
+        "id": "decorators",
+        "icon": "decorator",
+        "title": "decorators",
+        "routerLink": [
+          "business",
+          "decorators"
+        ],
+        "hasIndex": true
+      },
+      {
+        "id": "patterns",
+        "icon": "payload",
+        "title": "Patterns",
+        "routerLink": [
+          "business",
+          "patterns"
+        ],
+        "hasIndex": true
+      },
+      {
+        "id": "controllers",
+        "icon": "modal",
+        "title": "Operations",
+        "routerLink": [
+          "business",
+          "controllers"
+        ],
+        "hasIndex": true
+      },
+      {
+        "id": "annotations",
+        "icon": "menu",
+        "title": "Annotations",
+        "routerLink": [
+          "business",
+          "annotations"
+        ],
+        "hasIndex": true
+      },
+      {
+        "id": "repository",
+        "icon": "select-input",
+        "title": "Database",
+        "routerLink": [
+          "business",
+          "repository"
+        ],
+        "hasIndex": true
+      },
+      {
+        "id": "messaging",
+        "icon": "uploader",
+        "title": "Messaging",
+        "routerLink": [
+          "business",
+          "messaging"
+        ],
+        "hasIndex": true
+      }
+    ]
+  },
+  {
+    "id": "cdk",
+    "icon": "dashboard",
+    "title": "CDK",
+    "hasIndex": false,
+    "children": [
+      {
+        "id": "base-components",
+        "icon": "base-components",
+        "title": "base-components",
+        "routerLink": [
+          "business",
+          "base-components"
+        ],
+        "hasIndex": true
+      },
+      {
+        "id": "i18n",
+        "icon": "language",
+        "title": "i18n",
+        "routerLink": [
+          "business",
+          "i-18-n"
+        ],
+        "hasIndex": true
+      },
+      {
+        "id": "react",
+        "icon": "react",
+        "title": "React",
+        "routerLink": [
+          "business",
+          "react"
+        ],
+        "hasIndex": true
+      }
+    ]
+  }
+]

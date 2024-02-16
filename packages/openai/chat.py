@@ -21,7 +21,7 @@ def req(msg):
             {"role": "user", "content": msg}]
 
 def ask(input):
-    comp = AI.chat.completions.create(model=MODEL, messages=req(input))
+    comp = AI.chat.completions.create(model=MODEL, messages=req(input), temperature=0)
     if len(comp.choices) > 0:
         content = comp.choices[0].message.content
         return content
