@@ -90,6 +90,7 @@ tasks:
         silent: true
         cmds:
         -   |
+            clear
             while ! test -e ~/.wskprops
             do
                 echo "*** Configuring Access to nuvolaris.dev with OpenAI ***"
