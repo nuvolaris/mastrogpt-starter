@@ -47,12 +47,12 @@ tasks:
         cmds:
         -   |
             nuv -version
-            for i in packages/*/*/requirements.txt
-            do pip install -r $i
-            done
             task config
 
     cli: |
+        for i in packages/*/*/requirements.txt
+        do pip install -r $i
+        done
         ipython -i util/init.ipy
     
     serve:
