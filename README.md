@@ -1,3 +1,5 @@
+## Obsolete - DO NOT USE - Use the https://github.com/mastrogpt/python-starter  instead
+
 # Nuvolaris MastroGPT
 
 Build easily AI applications with MastroGPT!
