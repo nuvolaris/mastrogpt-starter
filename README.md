@@ -1,3 +1,6 @@
+### DO NOT USE - use https://github.com/mastrogpt/python-starter
+
+
 # Nuvolaris MastroGPT
 
 Build easily AI applications with MastroGPT!
