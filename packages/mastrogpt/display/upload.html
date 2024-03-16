@@ -1,0 +1,45 @@
+<div>
+    <input type="file" id="fileInput" />
+    <button id="uploadButton">Carica</button>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('uploadButton').addEventListener('click', function() {
+            var file = document.getElementById('fileInput').files[0];
+            if (!file) {
+                return alert('Seleziona un file prima di caricare.');
+            }
+
+            var reader = new FileReader();
+            reader.onload = function(event) {
+                uploadFile(event.target.result, file.name);
+            };
+            reader.readAsDataURL(file);
+        });
+
+        function uploadFile(base64File, fileName) {
+            const actionUrl = 'https://cor277.nuvolaris.dev/api/my/upload'; // URL della tua action OpenWhisk
+
+            fetch(actionUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ file: base64File, filename: fileName })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok.');
+                }
+                return response.text();
+            })
+            .then(data => {
+                console.log('File caricato con successo:', data);
+            })
+            .catch(error => {
+                console.error('Errore nel caricamento:', error);
+            });
+        }
+    });
+</script>

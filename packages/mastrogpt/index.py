@@ -9,8 +9,12 @@ def main(arg):
                 "url": "mastrogpt/demo",
             },
             {
-                "name": "OpenAI",
+                "name": "Reclamo",
                 "url": "openai/chat"
+            },
+            {
+                "name": "Reclamo-MistralAI",
+                "url": "mastrogpt/mistral"
             },
         ]
     }
